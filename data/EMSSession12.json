@@ -1,0 +1,2969 @@
+[
+  {
+    "_index": "packets-2024-09-18",
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Sep 18, 2024 10:21:47.306916000 W. Europe Daylight Time",
+          "frame.time_utc": "Sep 18, 2024 08:21:47.306916000 UTC",
+          "frame.time_epoch": "1726647707.306916000",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_delta": "0.000212000",
+          "frame.time_delta_displayed": "0.000000000",
+          "frame.time_relative": "0.020061000",
+          "frame.number": "10",
+          "frame.len": "80",
+          "frame.cap_len": "80",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:doip:uds",
+          "frame.coloring_rule.name": "TCP",
+          "frame.coloring_rule.string": "tcp"
+        },
+        "eth": {
+          "eth.dst": "00:00:00:00:00:00",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "00:00:00_00:00:00",
+            "eth.dst.oui": "0",
+            "eth.dst.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.dst.lg": "0",
+            "eth.dst.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "00:00:00:00:00:00",
+          "eth.src_tree": {
+            "eth.src_resolved": "00:00:00_00:00:00",
+            "eth.src.oui": "0",
+            "eth.src.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.src.lg": "0",
+            "eth.src.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x0800",
+          "eth.stream": "0"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "66",
+          "ip.id": "0x16a6",
+          "ip.flags": "0x02",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0"
+          },
+          "ip.frag_offset": "0",
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x260e",
+          "ip.checksum.status": "1",
+          "ip.checksum_calculated": "0x260e",
+          "ip.src": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.src_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.dst": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.dst_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.stream": "0"
+        },
+        "tcp": {
+          "tcp.srcport": "41096",
+          "tcp.dstport": "13400",
+          "tcp.port": "41096",
+          "tcp.port": "13400",
+          "tcp.stream": "0",
+          "tcp.stream.pnum": "8",
+          "tcp.completeness": "31",
+          "tcp.completeness_tree": {
+            "tcp.completeness.rst": "0",
+            "tcp.completeness.fin": "1",
+            "tcp.completeness.data": "1",
+            "tcp.completeness.ack": "1",
+            "tcp.completeness.syn-ack": "1",
+            "tcp.completeness.syn": "1",
+            "tcp.completeness.str": "·FDASS"
+          },
+          "tcp.len": "14",
+          "tcp.seq": "2308715596",
+          "tcp.seq_raw": "2308715596",
+          "tcp.nxtseq": "2308715610",
+          "tcp.ack": "500580743",
+          "tcp.ack_raw": "500580743",
+          "tcp.hdr_len": "32",
+          "tcp.flags": "0x0018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ae": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ece": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "·······AP···"
+          },
+          "tcp.window_size_value": "512",
+          "tcp.window_size": "65536",
+          "tcp.window_size_scalefactor": "128",
+          "tcp.checksum": "0xfe36",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "01:01:08:0a:dc:08:5c:7b:dc:08:5c:78",
+          "tcp.options_tree": {
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.timestamp": "08:0a:dc:08:5c:7b:dc:08:5c:78",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "3691535483",
+              "tcp.options.timestamp.tsecr": "3691535480"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.020061000",
+            "tcp.time_delta": "0.002412000"
+          },
+          "tcp.payload": "02:fd:80:01:00:00:00:06:0e:00:10:32:3e:00",
+          "tcp.pdu.size": "14"
+        },
+        "doip": {
+          "Header": {
+            "doip.version": "0x02",
+            "doip.inverse": "0xfd",
+            "doip.type": "0x8001",
+            "doip.length": "6"
+          },
+          "doip.source_address": "0x0e00",
+          "doip.target_address": "0x1032"
+        },
+        "uds": {
+          "uds.diag_addr_source": "0x0e00",
+          "uds.diag_addr_source_name": "3584",
+          "uds.diag_addr": "0x0e00",
+          "uds.diag_addr_name": "3584",
+          "uds.diag_addr_target": "0x1032",
+          "uds.diag_addr_target_name": "4146",
+          "uds.diag_addr": "0x1032",
+          "uds.diag_addr_name": "4146",
+          "uds.sid": "0x3e",
+          "uds.reply": "0x00",
+          "uds.subfunction": "0x00",
+          "uds.subfunction_tree": {
+            "uds.tp.subfunction_without_suppress": "0x00",
+            "uds.suppress_reply.indication": "0"
+          }
+        }
+      }
+    }
+  },
+  {
+    "_index": "packets-2024-09-18",
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Sep 18, 2024 10:21:47.312051000 W. Europe Daylight Time",
+          "frame.time_utc": "Sep 18, 2024 08:21:47.312051000 UTC",
+          "frame.time_epoch": "1726647707.312051000",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_delta": "0.003335000",
+          "frame.time_delta_displayed": "0.005135000",
+          "frame.time_relative": "0.025196000",
+          "frame.number": "12",
+          "frame.len": "80",
+          "frame.cap_len": "80",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:doip:uds",
+          "frame.coloring_rule.name": "TCP",
+          "frame.coloring_rule.string": "tcp"
+        },
+        "eth": {
+          "eth.dst": "00:00:00:00:00:00",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "00:00:00_00:00:00",
+            "eth.dst.oui": "0",
+            "eth.dst.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.dst.lg": "0",
+            "eth.dst.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "00:00:00:00:00:00",
+          "eth.src_tree": {
+            "eth.src_resolved": "00:00:00_00:00:00",
+            "eth.src.oui": "0",
+            "eth.src.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.src.lg": "0",
+            "eth.src.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x0800",
+          "eth.stream": "0"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "66",
+          "ip.id": "0x4b95",
+          "ip.flags": "0x02",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0"
+          },
+          "ip.frag_offset": "0",
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0xf11e",
+          "ip.checksum.status": "1",
+          "ip.checksum_calculated": "0xf11e",
+          "ip.src": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.src_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.dst": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.dst_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.stream": "0"
+        },
+        "tcp": {
+          "tcp.srcport": "13400",
+          "tcp.dstport": "41096",
+          "tcp.port": "13400",
+          "tcp.port": "41096",
+          "tcp.stream": "0",
+          "tcp.stream.pnum": "10",
+          "tcp.completeness": "31",
+          "tcp.completeness_tree": {
+            "tcp.completeness.rst": "0",
+            "tcp.completeness.fin": "1",
+            "tcp.completeness.data": "1",
+            "tcp.completeness.ack": "1",
+            "tcp.completeness.syn-ack": "1",
+            "tcp.completeness.syn": "1",
+            "tcp.completeness.str": "·FDASS"
+          },
+          "tcp.len": "14",
+          "tcp.seq": "500580756",
+          "tcp.seq_raw": "500580756",
+          "tcp.nxtseq": "500580770",
+          "tcp.ack": "2308715610",
+          "tcp.ack_raw": "2308715610",
+          "tcp.hdr_len": "32",
+          "tcp.flags": "0x0018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ae": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ece": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "·······AP···"
+          },
+          "tcp.window_size_value": "512",
+          "tcp.window_size": "65536",
+          "tcp.window_size_scalefactor": "128",
+          "tcp.checksum": "0xfe36",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "01:01:08:0a:dc:08:5c:80:dc:08:5c:7b",
+          "tcp.options_tree": {
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.timestamp": "08:0a:dc:08:5c:80:dc:08:5c:7b",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "3691535488",
+              "tcp.options.timestamp.tsecr": "3691535483"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.025196000",
+            "tcp.time_delta": "0.003335000"
+          },
+          "tcp.payload": "02:fd:80:01:00:00:00:06:10:32:0e:00:7e:00",
+          "tcp.pdu.size": "14"
+        },
+        "doip": {
+          "Header": {
+            "doip.version": "0x02",
+            "doip.inverse": "0xfd",
+            "doip.type": "0x8001",
+            "doip.length": "6"
+          },
+          "doip.source_address": "0x1032",
+          "doip.target_address": "0x0e00"
+        },
+        "uds": {
+          "uds.diag_addr_source": "0x1032",
+          "uds.diag_addr_source_name": "4146",
+          "uds.diag_addr": "0x1032",
+          "uds.diag_addr_name": "4146",
+          "uds.diag_addr_target": "0x0e00",
+          "uds.diag_addr_target_name": "3584",
+          "uds.diag_addr": "0x0e00",
+          "uds.diag_addr_name": "3584",
+          "uds.sid": "0x3e",
+          "uds.reply": "0x01",
+          "uds.subfunction": "0x00",
+          "uds.subfunction_tree": {
+            "uds.tp.subfunction_without_suppress": "0x00"
+          }
+        }
+      }
+    }
+  },
+  {
+    "_index": "packets-2024-09-18",
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Sep 18, 2024 10:21:47.312365000 W. Europe Daylight Time",
+          "frame.time_utc": "Sep 18, 2024 08:21:47.312365000 UTC",
+          "frame.time_epoch": "1726647707.312365000",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_delta": "0.000260000",
+          "frame.time_delta_displayed": "0.000314000",
+          "frame.time_relative": "0.025510000",
+          "frame.number": "14",
+          "frame.len": "80",
+          "frame.cap_len": "80",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:doip:uds",
+          "frame.coloring_rule.name": "TCP",
+          "frame.coloring_rule.string": "tcp"
+        },
+        "eth": {
+          "eth.dst": "00:00:00:00:00:00",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "00:00:00_00:00:00",
+            "eth.dst.oui": "0",
+            "eth.dst.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.dst.lg": "0",
+            "eth.dst.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "00:00:00:00:00:00",
+          "eth.src_tree": {
+            "eth.src_resolved": "00:00:00_00:00:00",
+            "eth.src.oui": "0",
+            "eth.src.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.src.lg": "0",
+            "eth.src.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x0800",
+          "eth.stream": "0"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "66",
+          "ip.id": "0x16a8",
+          "ip.flags": "0x02",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0"
+          },
+          "ip.frag_offset": "0",
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x260c",
+          "ip.checksum.status": "1",
+          "ip.checksum_calculated": "0x260c",
+          "ip.src": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.src_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.dst": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.dst_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.stream": "0"
+        },
+        "tcp": {
+          "tcp.srcport": "41096",
+          "tcp.dstport": "13400",
+          "tcp.port": "41096",
+          "tcp.port": "13400",
+          "tcp.stream": "0",
+          "tcp.stream.pnum": "12",
+          "tcp.completeness": "31",
+          "tcp.completeness_tree": {
+            "tcp.completeness.rst": "0",
+            "tcp.completeness.fin": "1",
+            "tcp.completeness.data": "1",
+            "tcp.completeness.ack": "1",
+            "tcp.completeness.syn-ack": "1",
+            "tcp.completeness.syn": "1",
+            "tcp.completeness.str": "·FDASS"
+          },
+          "tcp.len": "14",
+          "tcp.seq": "2308715610",
+          "tcp.seq_raw": "2308715610",
+          "tcp.nxtseq": "2308715624",
+          "tcp.ack": "500580770",
+          "tcp.ack_raw": "500580770",
+          "tcp.hdr_len": "32",
+          "tcp.flags": "0x0018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ae": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ece": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "·······AP···"
+          },
+          "tcp.window_size_value": "512",
+          "tcp.window_size": "65536",
+          "tcp.window_size_scalefactor": "128",
+          "tcp.checksum": "0xfe36",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "01:01:08:0a:dc:08:5c:80:dc:08:5c:7d",
+          "tcp.options_tree": {
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.timestamp": "08:0a:dc:08:5c:80:dc:08:5c:7d",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "3691535488",
+              "tcp.options.timestamp.tsecr": "3691535485"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.025510000",
+            "tcp.time_delta": "0.000260000"
+          },
+          "tcp.payload": "02:fd:80:01:00:00:00:06:0e:00:10:32:3e:80",
+          "tcp.pdu.size": "14"
+        },
+        "doip": {
+          "Header": {
+            "doip.version": "0x02",
+            "doip.inverse": "0xfd",
+            "doip.type": "0x8001",
+            "doip.length": "6"
+          },
+          "doip.source_address": "0x0e00",
+          "doip.target_address": "0x1032"
+        },
+        "uds": {
+          "uds.diag_addr_source": "0x0e00",
+          "uds.diag_addr_source_name": "3584",
+          "uds.diag_addr": "0x0e00",
+          "uds.diag_addr_name": "3584",
+          "uds.diag_addr_target": "0x1032",
+          "uds.diag_addr_target_name": "4146",
+          "uds.diag_addr": "0x1032",
+          "uds.diag_addr_name": "4146",
+          "uds.sid": "0x3e",
+          "uds.reply": "0x00",
+          "uds.subfunction": "0x80",
+          "uds.subfunction_tree": {
+            "uds.tp.subfunction_without_suppress": "0x00",
+            "uds.suppress_reply.indication": "1"
+          }
+        }
+      }
+    }
+  },
+  {
+    "_index": "packets-2024-09-18",
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Sep 18, 2024 10:21:47.315346000 W. Europe Daylight Time",
+          "frame.time_utc": "Sep 18, 2024 08:21:47.315346000 UTC",
+          "frame.time_epoch": "1726647707.315346000",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_delta": "0.001468000",
+          "frame.time_delta_displayed": "0.002981000",
+          "frame.time_relative": "0.028491000",
+          "frame.number": "16",
+          "frame.len": "80",
+          "frame.cap_len": "80",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:doip:uds",
+          "frame.coloring_rule.name": "TCP",
+          "frame.coloring_rule.string": "tcp"
+        },
+        "eth": {
+          "eth.dst": "00:00:00:00:00:00",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "00:00:00_00:00:00",
+            "eth.dst.oui": "0",
+            "eth.dst.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.dst.lg": "0",
+            "eth.dst.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "00:00:00:00:00:00",
+          "eth.src_tree": {
+            "eth.src_resolved": "00:00:00_00:00:00",
+            "eth.src.oui": "0",
+            "eth.src.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.src.lg": "0",
+            "eth.src.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x0800",
+          "eth.stream": "0"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "66",
+          "ip.id": "0x4b97",
+          "ip.flags": "0x02",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0"
+          },
+          "ip.frag_offset": "0",
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0xf11c",
+          "ip.checksum.status": "1",
+          "ip.checksum_calculated": "0xf11c",
+          "ip.src": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.src_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.dst": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.dst_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.stream": "0"
+        },
+        "tcp": {
+          "tcp.srcport": "13400",
+          "tcp.dstport": "41096",
+          "tcp.port": "13400",
+          "tcp.port": "41096",
+          "tcp.stream": "0",
+          "tcp.stream.pnum": "14",
+          "tcp.completeness": "31",
+          "tcp.completeness_tree": {
+            "tcp.completeness.rst": "0",
+            "tcp.completeness.fin": "1",
+            "tcp.completeness.data": "1",
+            "tcp.completeness.ack": "1",
+            "tcp.completeness.syn-ack": "1",
+            "tcp.completeness.syn": "1",
+            "tcp.completeness.str": "·FDASS"
+          },
+          "tcp.len": "14",
+          "tcp.seq": "500580783",
+          "tcp.seq_raw": "500580783",
+          "tcp.nxtseq": "500580797",
+          "tcp.ack": "2308715624",
+          "tcp.ack_raw": "2308715624",
+          "tcp.hdr_len": "32",
+          "tcp.flags": "0x0018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ae": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ece": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "·······AP···"
+          },
+          "tcp.window_size_value": "512",
+          "tcp.window_size": "65536",
+          "tcp.window_size_scalefactor": "128",
+          "tcp.checksum": "0xfe36",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "01:01:08:0a:dc:08:5c:83:dc:08:5c:80",
+          "tcp.options_tree": {
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.timestamp": "08:0a:dc:08:5c:83:dc:08:5c:80",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "3691535491",
+              "tcp.options.timestamp.tsecr": "3691535488"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.028491000",
+            "tcp.time_delta": "0.001468000"
+          },
+          "tcp.payload": "02:fd:80:01:00:00:00:06:10:32:0e:00:7e:80",
+          "tcp.pdu.size": "14"
+        },
+        "doip": {
+          "Header": {
+            "doip.version": "0x02",
+            "doip.inverse": "0xfd",
+            "doip.type": "0x8001",
+            "doip.length": "6"
+          },
+          "doip.source_address": "0x1032",
+          "doip.target_address": "0x0e00"
+        },
+        "uds": {
+          "uds.diag_addr_source": "0x1032",
+          "uds.diag_addr_source_name": "4146",
+          "uds.diag_addr": "0x1032",
+          "uds.diag_addr_name": "4146",
+          "uds.diag_addr_target": "0x0e00",
+          "uds.diag_addr_target_name": "3584",
+          "uds.diag_addr": "0x0e00",
+          "uds.diag_addr_name": "3584",
+          "uds.sid": "0x3e",
+          "uds.reply": "0x01",
+          "uds.subfunction": "0x80",
+          "uds.subfunction_tree": {
+            "uds.tp.subfunction_without_suppress": "0x00"
+          }
+        }
+      }
+    }
+  },
+  {
+    "_index": "packets-2024-09-18",
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Sep 18, 2024 10:21:47.315571000 W. Europe Daylight Time",
+          "frame.time_utc": "Sep 18, 2024 08:21:47.315571000 UTC",
+          "frame.time_epoch": "1726647707.315571000",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_delta": "0.000182000",
+          "frame.time_delta_displayed": "0.000225000",
+          "frame.time_relative": "0.028716000",
+          "frame.number": "18",
+          "frame.len": "81",
+          "frame.cap_len": "81",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:doip:uds",
+          "frame.coloring_rule.name": "TCP",
+          "frame.coloring_rule.string": "tcp"
+        },
+        "eth": {
+          "eth.dst": "00:00:00:00:00:00",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "00:00:00_00:00:00",
+            "eth.dst.oui": "0",
+            "eth.dst.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.dst.lg": "0",
+            "eth.dst.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "00:00:00:00:00:00",
+          "eth.src_tree": {
+            "eth.src_resolved": "00:00:00_00:00:00",
+            "eth.src.oui": "0",
+            "eth.src.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.src.lg": "0",
+            "eth.src.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x0800",
+          "eth.stream": "0"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "67",
+          "ip.id": "0x16aa",
+          "ip.flags": "0x02",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0"
+          },
+          "ip.frag_offset": "0",
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x2609",
+          "ip.checksum.status": "1",
+          "ip.checksum_calculated": "0x2609",
+          "ip.src": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.src_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.dst": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.dst_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.stream": "0"
+        },
+        "tcp": {
+          "tcp.srcport": "41096",
+          "tcp.dstport": "13400",
+          "tcp.port": "41096",
+          "tcp.port": "13400",
+          "tcp.stream": "0",
+          "tcp.stream.pnum": "16",
+          "tcp.completeness": "31",
+          "tcp.completeness_tree": {
+            "tcp.completeness.rst": "0",
+            "tcp.completeness.fin": "1",
+            "tcp.completeness.data": "1",
+            "tcp.completeness.ack": "1",
+            "tcp.completeness.syn-ack": "1",
+            "tcp.completeness.syn": "1",
+            "tcp.completeness.str": "·FDASS"
+          },
+          "tcp.len": "15",
+          "tcp.seq": "2308715624",
+          "tcp.seq_raw": "2308715624",
+          "tcp.nxtseq": "2308715639",
+          "tcp.ack": "500580797",
+          "tcp.ack_raw": "500580797",
+          "tcp.hdr_len": "32",
+          "tcp.flags": "0x0018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ae": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ece": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "·······AP···"
+          },
+          "tcp.window_size_value": "512",
+          "tcp.window_size": "65536",
+          "tcp.window_size_scalefactor": "128",
+          "tcp.checksum": "0xfe37",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "01:01:08:0a:dc:08:5c:84:dc:08:5c:82",
+          "tcp.options_tree": {
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.timestamp": "08:0a:dc:08:5c:84:dc:08:5c:82",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "3691535492",
+              "tcp.options.timestamp.tsecr": "3691535490"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.028716000",
+            "tcp.time_delta": "0.000182000"
+          },
+          "tcp.payload": "02:fd:80:01:00:00:00:07:0e:00:10:32:22:f1:90",
+          "tcp.pdu.size": "15"
+        },
+        "doip": {
+          "Header": {
+            "doip.version": "0x02",
+            "doip.inverse": "0xfd",
+            "doip.type": "0x8001",
+            "doip.length": "7"
+          },
+          "doip.source_address": "0x0e00",
+          "doip.target_address": "0x1032"
+        },
+        "uds": {
+          "uds.diag_addr_source": "0x0e00",
+          "uds.diag_addr_source_name": "3584",
+          "uds.diag_addr": "0x0e00",
+          "uds.diag_addr_name": "3584",
+          "uds.diag_addr_target": "0x1032",
+          "uds.diag_addr_target_name": "4146",
+          "uds.diag_addr": "0x1032",
+          "uds.diag_addr_name": "4146",
+          "uds.sid": "0x22",
+          "uds.reply": "0x00",
+          "uds.rdbi.data_identifier": "0xf190"
+        }
+      }
+    }
+  },
+  {
+    "_index": "packets-2024-09-18",
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Sep 18, 2024 10:21:47.319441000 W. Europe Daylight Time",
+          "frame.time_utc": "Sep 18, 2024 08:21:47.319441000 UTC",
+          "frame.time_epoch": "1726647707.319441000",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_delta": "0.002484000",
+          "frame.time_delta_displayed": "0.003870000",
+          "frame.time_relative": "0.032586000",
+          "frame.number": "20",
+          "frame.len": "98",
+          "frame.cap_len": "98",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:doip:uds",
+          "frame.coloring_rule.name": "TCP",
+          "frame.coloring_rule.string": "tcp"
+        },
+        "eth": {
+          "eth.dst": "00:00:00:00:00:00",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "00:00:00_00:00:00",
+            "eth.dst.oui": "0",
+            "eth.dst.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.dst.lg": "0",
+            "eth.dst.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "00:00:00:00:00:00",
+          "eth.src_tree": {
+            "eth.src_resolved": "00:00:00_00:00:00",
+            "eth.src.oui": "0",
+            "eth.src.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.src.lg": "0",
+            "eth.src.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x0800",
+          "eth.stream": "0"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "84",
+          "ip.id": "0x4b99",
+          "ip.flags": "0x02",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0"
+          },
+          "ip.frag_offset": "0",
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0xf108",
+          "ip.checksum.status": "1",
+          "ip.checksum_calculated": "0xf108",
+          "ip.src": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.src_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.dst": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.dst_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.stream": "0"
+        },
+        "tcp": {
+          "tcp.srcport": "13400",
+          "tcp.dstport": "41096",
+          "tcp.port": "13400",
+          "tcp.port": "41096",
+          "tcp.stream": "0",
+          "tcp.stream.pnum": "18",
+          "tcp.completeness": "31",
+          "tcp.completeness_tree": {
+            "tcp.completeness.rst": "0",
+            "tcp.completeness.fin": "1",
+            "tcp.completeness.data": "1",
+            "tcp.completeness.ack": "1",
+            "tcp.completeness.syn-ack": "1",
+            "tcp.completeness.syn": "1",
+            "tcp.completeness.str": "·FDASS"
+          },
+          "tcp.len": "32",
+          "tcp.seq": "500580810",
+          "tcp.seq_raw": "500580810",
+          "tcp.nxtseq": "500580842",
+          "tcp.ack": "2308715639",
+          "tcp.ack_raw": "2308715639",
+          "tcp.hdr_len": "32",
+          "tcp.flags": "0x0018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ae": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ece": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "·······AP···"
+          },
+          "tcp.window_size_value": "512",
+          "tcp.window_size": "65536",
+          "tcp.window_size_scalefactor": "128",
+          "tcp.checksum": "0xfe48",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "01:01:08:0a:dc:08:5c:87:dc:08:5c:84",
+          "tcp.options_tree": {
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.timestamp": "08:0a:dc:08:5c:87:dc:08:5c:84",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "3691535495",
+              "tcp.options.timestamp.tsecr": "3691535492"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.032586000",
+            "tcp.time_delta": "0.002484000"
+          },
+          "tcp.payload": "02:fd:80:01:00:00:00:18:10:32:0e:00:62:f1:90:4d:41:54:31:32:33:34:35:36:37:38:39:30:31:32:33:34",
+          "tcp.pdu.size": "32"
+        },
+        "doip": {
+          "Header": {
+            "doip.version": "0x02",
+            "doip.inverse": "0xfd",
+            "doip.type": "0x8001",
+            "doip.length": "24"
+          },
+          "doip.source_address": "0x1032",
+          "doip.target_address": "0x0e00"
+        },
+        "uds": {
+          "uds.diag_addr_source": "0x1032",
+          "uds.diag_addr_source_name": "4146",
+          "uds.diag_addr": "0x1032",
+          "uds.diag_addr_name": "4146",
+          "uds.diag_addr_target": "0x0e00",
+          "uds.diag_addr_target_name": "3584",
+          "uds.diag_addr": "0x0e00",
+          "uds.diag_addr_name": "3584",
+          "uds.sid": "0x22",
+          "uds.reply": "0x01",
+          "uds.rdbi.data_identifier": "0xf190",
+          "uds.did_f190.vin": "MAT12345678901234"
+        }
+      }
+    }
+  },
+  {
+    "_index": "packets-2024-09-18",
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Sep 18, 2024 10:21:47.319798000 W. Europe Daylight Time",
+          "frame.time_utc": "Sep 18, 2024 08:21:47.319798000 UTC",
+          "frame.time_epoch": "1726647707.319798000",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_delta": "0.000304000",
+          "frame.time_delta_displayed": "0.000357000",
+          "frame.time_relative": "0.032943000",
+          "frame.number": "22",
+          "frame.len": "80",
+          "frame.cap_len": "80",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:doip:uds",
+          "frame.coloring_rule.name": "TCP",
+          "frame.coloring_rule.string": "tcp"
+        },
+        "eth": {
+          "eth.dst": "00:00:00:00:00:00",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "00:00:00_00:00:00",
+            "eth.dst.oui": "0",
+            "eth.dst.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.dst.lg": "0",
+            "eth.dst.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "00:00:00:00:00:00",
+          "eth.src_tree": {
+            "eth.src_resolved": "00:00:00_00:00:00",
+            "eth.src.oui": "0",
+            "eth.src.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.src.lg": "0",
+            "eth.src.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x0800",
+          "eth.stream": "0"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "66",
+          "ip.id": "0x16ac",
+          "ip.flags": "0x02",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0"
+          },
+          "ip.frag_offset": "0",
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x2608",
+          "ip.checksum.status": "1",
+          "ip.checksum_calculated": "0x2608",
+          "ip.src": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.src_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.dst": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.dst_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.stream": "0"
+        },
+        "tcp": {
+          "tcp.srcport": "41096",
+          "tcp.dstport": "13400",
+          "tcp.port": "41096",
+          "tcp.port": "13400",
+          "tcp.stream": "0",
+          "tcp.stream.pnum": "20",
+          "tcp.completeness": "31",
+          "tcp.completeness_tree": {
+            "tcp.completeness.rst": "0",
+            "tcp.completeness.fin": "1",
+            "tcp.completeness.data": "1",
+            "tcp.completeness.ack": "1",
+            "tcp.completeness.syn-ack": "1",
+            "tcp.completeness.syn": "1",
+            "tcp.completeness.str": "·FDASS"
+          },
+          "tcp.len": "14",
+          "tcp.seq": "2308715639",
+          "tcp.seq_raw": "2308715639",
+          "tcp.nxtseq": "2308715653",
+          "tcp.ack": "500580842",
+          "tcp.ack_raw": "500580842",
+          "tcp.hdr_len": "32",
+          "tcp.flags": "0x0018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ae": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ece": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "·······AP···"
+          },
+          "tcp.window_size_value": "512",
+          "tcp.window_size": "65536",
+          "tcp.window_size_scalefactor": "128",
+          "tcp.checksum": "0xfe36",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "01:01:08:0a:dc:08:5c:88:dc:08:5c:85",
+          "tcp.options_tree": {
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.timestamp": "08:0a:dc:08:5c:88:dc:08:5c:85",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "3691535496",
+              "tcp.options.timestamp.tsecr": "3691535493"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.032943000",
+            "tcp.time_delta": "0.000304000"
+          },
+          "tcp.payload": "02:fd:80:01:00:00:00:06:0e:00:10:32:10:01",
+          "tcp.pdu.size": "14"
+        },
+        "doip": {
+          "Header": {
+            "doip.version": "0x02",
+            "doip.inverse": "0xfd",
+            "doip.type": "0x8001",
+            "doip.length": "6"
+          },
+          "doip.source_address": "0x0e00",
+          "doip.target_address": "0x1032"
+        },
+        "uds": {
+          "uds.diag_addr_source": "0x0e00",
+          "uds.diag_addr_source_name": "3584",
+          "uds.diag_addr": "0x0e00",
+          "uds.diag_addr_name": "3584",
+          "uds.diag_addr_target": "0x1032",
+          "uds.diag_addr_target_name": "4146",
+          "uds.diag_addr": "0x1032",
+          "uds.diag_addr_name": "4146",
+          "uds.sid": "0x10",
+          "uds.reply": "0x00",
+          "uds.dsc.suppress_reply.indication": "0",
+          "uds.dsc.subfunction": "0x01"
+        }
+      }
+    }
+  },
+  {
+    "_index": "packets-2024-09-18",
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Sep 18, 2024 10:21:47.322596000 W. Europe Daylight Time",
+          "frame.time_utc": "Sep 18, 2024 08:21:47.322596000 UTC",
+          "frame.time_epoch": "1726647707.322596000",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_delta": "0.001895000",
+          "frame.time_delta_displayed": "0.002798000",
+          "frame.time_relative": "0.035741000",
+          "frame.number": "24",
+          "frame.len": "84",
+          "frame.cap_len": "84",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:doip:uds",
+          "frame.coloring_rule.name": "TCP",
+          "frame.coloring_rule.string": "tcp"
+        },
+        "eth": {
+          "eth.dst": "00:00:00:00:00:00",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "00:00:00_00:00:00",
+            "eth.dst.oui": "0",
+            "eth.dst.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.dst.lg": "0",
+            "eth.dst.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "00:00:00:00:00:00",
+          "eth.src_tree": {
+            "eth.src_resolved": "00:00:00_00:00:00",
+            "eth.src.oui": "0",
+            "eth.src.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.src.lg": "0",
+            "eth.src.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x0800",
+          "eth.stream": "0"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "70",
+          "ip.id": "0x4b9b",
+          "ip.flags": "0x02",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0"
+          },
+          "ip.frag_offset": "0",
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0xf114",
+          "ip.checksum.status": "1",
+          "ip.checksum_calculated": "0xf114",
+          "ip.src": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.src_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.dst": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.dst_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.stream": "0"
+        },
+        "tcp": {
+          "tcp.srcport": "13400",
+          "tcp.dstport": "41096",
+          "tcp.port": "13400",
+          "tcp.port": "41096",
+          "tcp.stream": "0",
+          "tcp.stream.pnum": "22",
+          "tcp.completeness": "31",
+          "tcp.completeness_tree": {
+            "tcp.completeness.rst": "0",
+            "tcp.completeness.fin": "1",
+            "tcp.completeness.data": "1",
+            "tcp.completeness.ack": "1",
+            "tcp.completeness.syn-ack": "1",
+            "tcp.completeness.syn": "1",
+            "tcp.completeness.str": "·FDASS"
+          },
+          "tcp.len": "18",
+          "tcp.seq": "500580855",
+          "tcp.seq_raw": "500580855",
+          "tcp.nxtseq": "500580873",
+          "tcp.ack": "2308715653",
+          "tcp.ack_raw": "2308715653",
+          "tcp.hdr_len": "32",
+          "tcp.flags": "0x0018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ae": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ece": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "·······AP···"
+          },
+          "tcp.window_size_value": "512",
+          "tcp.window_size": "65536",
+          "tcp.window_size_scalefactor": "128",
+          "tcp.checksum": "0xfe3a",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "01:01:08:0a:dc:08:5c:8b:dc:08:5c:88",
+          "tcp.options_tree": {
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.timestamp": "08:0a:dc:08:5c:8b:dc:08:5c:88",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "3691535499",
+              "tcp.options.timestamp.tsecr": "3691535496"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.035741000",
+            "tcp.time_delta": "0.001895000"
+          },
+          "tcp.payload": "02:fd:80:01:00:00:00:0a:10:32:0e:00:50:01:00:32:01:f4",
+          "tcp.pdu.size": "18"
+        },
+        "doip": {
+          "Header": {
+            "doip.version": "0x02",
+            "doip.inverse": "0xfd",
+            "doip.type": "0x8001",
+            "doip.length": "10"
+          },
+          "doip.source_address": "0x1032",
+          "doip.target_address": "0x0e00"
+        },
+        "uds": {
+          "uds.diag_addr_source": "0x1032",
+          "uds.diag_addr_source_name": "4146",
+          "uds.diag_addr": "0x1032",
+          "uds.diag_addr_name": "4146",
+          "uds.diag_addr_target": "0x0e00",
+          "uds.diag_addr_target_name": "3584",
+          "uds.diag_addr": "0x0e00",
+          "uds.diag_addr_name": "3584",
+          "uds.sid": "0x10",
+          "uds.reply": "0x01",
+          "uds.dsc.suppress_reply.indication": "0",
+          "uds.dsc.subfunction": "0x01",
+          "uds.dsc.parameter_record": "00:32:01:f4",
+          "uds.dsc.parameter_record_tree": {
+            "uds.dsc.p2_server_time_default": "50",
+            "uds.dsc.p2_server_time_enhanced": "5000"
+          }
+        }
+      }
+    }
+  },
+  {
+    "_index": "packets-2024-09-18",
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Sep 18, 2024 10:21:47.328563000 W. Europe Daylight Time",
+          "frame.time_utc": "Sep 18, 2024 08:21:47.328563000 UTC",
+          "frame.time_epoch": "1726647707.328563000",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_delta": "0.000253000",
+          "frame.time_delta_displayed": "0.005967000",
+          "frame.time_relative": "0.041708000",
+          "frame.number": "38",
+          "frame.len": "80",
+          "frame.cap_len": "80",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:doip:uds",
+          "frame.coloring_rule.name": "TCP",
+          "frame.coloring_rule.string": "tcp"
+        },
+        "eth": {
+          "eth.dst": "00:00:00:00:00:00",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "00:00:00_00:00:00",
+            "eth.dst.oui": "0",
+            "eth.dst.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.dst.lg": "0",
+            "eth.dst.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "00:00:00:00:00:00",
+          "eth.src_tree": {
+            "eth.src_resolved": "00:00:00_00:00:00",
+            "eth.src.oui": "0",
+            "eth.src.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.src.lg": "0",
+            "eth.src.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x0800",
+          "eth.stream": "0"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "66",
+          "ip.id": "0x3b5f",
+          "ip.flags": "0x02",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0"
+          },
+          "ip.frag_offset": "0",
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x0155",
+          "ip.checksum.status": "1",
+          "ip.checksum_calculated": "0x0155",
+          "ip.src": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.src_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.dst": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.dst_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.stream": "0"
+        },
+        "tcp": {
+          "tcp.srcport": "41098",
+          "tcp.dstport": "13400",
+          "tcp.port": "41098",
+          "tcp.port": "13400",
+          "tcp.stream": "1",
+          "tcp.stream.pnum": "8",
+          "tcp.completeness": "31",
+          "tcp.completeness_tree": {
+            "tcp.completeness.rst": "0",
+            "tcp.completeness.fin": "1",
+            "tcp.completeness.data": "1",
+            "tcp.completeness.ack": "1",
+            "tcp.completeness.syn-ack": "1",
+            "tcp.completeness.syn": "1",
+            "tcp.completeness.str": "·FDASS"
+          },
+          "tcp.len": "14",
+          "tcp.seq": "109241185",
+          "tcp.seq_raw": "109241185",
+          "tcp.nxtseq": "109241199",
+          "tcp.ack": "4240645915",
+          "tcp.ack_raw": "4240645915",
+          "tcp.hdr_len": "32",
+          "tcp.flags": "0x0018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ae": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ece": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "·······AP···"
+          },
+          "tcp.window_size_value": "512",
+          "tcp.window_size": "65536",
+          "tcp.window_size_scalefactor": "128",
+          "tcp.checksum": "0xfe36",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "01:01:08:0a:dc:08:5c:90:dc:08:5c:8d",
+          "tcp.options_tree": {
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.timestamp": "08:0a:dc:08:5c:90:dc:08:5c:8d",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "3691535504",
+              "tcp.options.timestamp.tsecr": "3691535501"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.005287000",
+            "tcp.time_delta": "0.003005000"
+          },
+          "tcp.payload": "02:fd:80:01:00:00:00:06:0e:00:e0:01:3e:00",
+          "tcp.pdu.size": "14"
+        },
+        "doip": {
+          "Header": {
+            "doip.version": "0x02",
+            "doip.inverse": "0xfd",
+            "doip.type": "0x8001",
+            "doip.length": "6"
+          },
+          "doip.source_address": "0x0e00",
+          "doip.target_address": "0xe001"
+        },
+        "uds": {
+          "uds.diag_addr_source": "0x0e00",
+          "uds.diag_addr_source_name": "3584",
+          "uds.diag_addr": "0x0e00",
+          "uds.diag_addr_name": "3584",
+          "uds.diag_addr_target": "0xe001",
+          "uds.diag_addr_target_name": "57345",
+          "uds.diag_addr": "0xe001",
+          "uds.diag_addr_name": "57345",
+          "uds.sid": "0x3e",
+          "uds.reply": "0x00",
+          "uds.subfunction": "0x00",
+          "uds.subfunction_tree": {
+            "uds.tp.subfunction_without_suppress": "0x00",
+            "uds.suppress_reply.indication": "0"
+          }
+        }
+      }
+    }
+  },
+  {
+    "_index": "packets-2024-09-18",
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Sep 18, 2024 10:21:47.331395000 W. Europe Daylight Time",
+          "frame.time_utc": "Sep 18, 2024 08:21:47.331395000 UTC",
+          "frame.time_epoch": "1726647707.331395000",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_delta": "0.001308000",
+          "frame.time_delta_displayed": "0.002832000",
+          "frame.time_relative": "0.044540000",
+          "frame.number": "40",
+          "frame.len": "80",
+          "frame.cap_len": "80",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:doip:uds",
+          "frame.coloring_rule.name": "TCP",
+          "frame.coloring_rule.string": "tcp"
+        },
+        "eth": {
+          "eth.dst": "00:00:00:00:00:00",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "00:00:00_00:00:00",
+            "eth.dst.oui": "0",
+            "eth.dst.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.dst.lg": "0",
+            "eth.dst.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "00:00:00:00:00:00",
+          "eth.src_tree": {
+            "eth.src_resolved": "00:00:00_00:00:00",
+            "eth.src.oui": "0",
+            "eth.src.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.src.lg": "0",
+            "eth.src.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x0800",
+          "eth.stream": "0"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "66",
+          "ip.id": "0xb336",
+          "ip.flags": "0x02",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0"
+          },
+          "ip.frag_offset": "0",
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x897d",
+          "ip.checksum.status": "1",
+          "ip.checksum_calculated": "0x897d",
+          "ip.src": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.src_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.dst": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.dst_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.stream": "0"
+        },
+        "tcp": {
+          "tcp.srcport": "13400",
+          "tcp.dstport": "41098",
+          "tcp.port": "13400",
+          "tcp.port": "41098",
+          "tcp.stream": "1",
+          "tcp.stream.pnum": "10",
+          "tcp.completeness": "31",
+          "tcp.completeness_tree": {
+            "tcp.completeness.rst": "0",
+            "tcp.completeness.fin": "1",
+            "tcp.completeness.data": "1",
+            "tcp.completeness.ack": "1",
+            "tcp.completeness.syn-ack": "1",
+            "tcp.completeness.syn": "1",
+            "tcp.completeness.str": "·FDASS"
+          },
+          "tcp.len": "14",
+          "tcp.seq": "4240645928",
+          "tcp.seq_raw": "4240645928",
+          "tcp.nxtseq": "4240645942",
+          "tcp.ack": "109241199",
+          "tcp.ack_raw": "109241199",
+          "tcp.hdr_len": "32",
+          "tcp.flags": "0x0018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ae": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ece": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "·······AP···"
+          },
+          "tcp.window_size_value": "512",
+          "tcp.window_size": "65536",
+          "tcp.window_size_scalefactor": "128",
+          "tcp.checksum": "0xfe36",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "01:01:08:0a:dc:08:5c:93:dc:08:5c:90",
+          "tcp.options_tree": {
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.timestamp": "08:0a:dc:08:5c:93:dc:08:5c:90",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "3691535507",
+              "tcp.options.timestamp.tsecr": "3691535504"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.008119000",
+            "tcp.time_delta": "0.001308000"
+          },
+          "tcp.payload": "02:fd:80:01:00:00:00:06:e0:01:0e:00:7e:00",
+          "tcp.pdu.size": "14"
+        },
+        "doip": {
+          "Header": {
+            "doip.version": "0x02",
+            "doip.inverse": "0xfd",
+            "doip.type": "0x8001",
+            "doip.length": "6"
+          },
+          "doip.source_address": "0xe001",
+          "doip.target_address": "0x0e00"
+        },
+        "uds": {
+          "uds.diag_addr_source": "0xe001",
+          "uds.diag_addr_source_name": "57345",
+          "uds.diag_addr": "0xe001",
+          "uds.diag_addr_name": "57345",
+          "uds.diag_addr_target": "0x0e00",
+          "uds.diag_addr_target_name": "3584",
+          "uds.diag_addr": "0x0e00",
+          "uds.diag_addr_name": "3584",
+          "uds.sid": "0x3e",
+          "uds.reply": "0x01",
+          "uds.subfunction": "0x00",
+          "uds.subfunction_tree": {
+            "uds.tp.subfunction_without_suppress": "0x00"
+          }
+        }
+      }
+    }
+  },
+  {
+    "_index": "packets-2024-09-18",
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Sep 18, 2024 10:21:47.331540000 W. Europe Daylight Time",
+          "frame.time_utc": "Sep 18, 2024 08:21:47.331540000 UTC",
+          "frame.time_epoch": "1726647707.331540000",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_delta": "0.000108000",
+          "frame.time_delta_displayed": "0.000145000",
+          "frame.time_relative": "0.044685000",
+          "frame.number": "42",
+          "frame.len": "80",
+          "frame.cap_len": "80",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:doip:uds",
+          "frame.coloring_rule.name": "TCP",
+          "frame.coloring_rule.string": "tcp"
+        },
+        "eth": {
+          "eth.dst": "00:00:00:00:00:00",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "00:00:00_00:00:00",
+            "eth.dst.oui": "0",
+            "eth.dst.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.dst.lg": "0",
+            "eth.dst.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "00:00:00:00:00:00",
+          "eth.src_tree": {
+            "eth.src_resolved": "00:00:00_00:00:00",
+            "eth.src.oui": "0",
+            "eth.src.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.src.lg": "0",
+            "eth.src.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x0800",
+          "eth.stream": "0"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "66",
+          "ip.id": "0x3b61",
+          "ip.flags": "0x02",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0"
+          },
+          "ip.frag_offset": "0",
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x0153",
+          "ip.checksum.status": "1",
+          "ip.checksum_calculated": "0x0153",
+          "ip.src": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.src_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.dst": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.dst_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.stream": "0"
+        },
+        "tcp": {
+          "tcp.srcport": "41098",
+          "tcp.dstport": "13400",
+          "tcp.port": "41098",
+          "tcp.port": "13400",
+          "tcp.stream": "1",
+          "tcp.stream.pnum": "12",
+          "tcp.completeness": "31",
+          "tcp.completeness_tree": {
+            "tcp.completeness.rst": "0",
+            "tcp.completeness.fin": "1",
+            "tcp.completeness.data": "1",
+            "tcp.completeness.ack": "1",
+            "tcp.completeness.syn-ack": "1",
+            "tcp.completeness.syn": "1",
+            "tcp.completeness.str": "·FDASS"
+          },
+          "tcp.len": "14",
+          "tcp.seq": "109241199",
+          "tcp.seq_raw": "109241199",
+          "tcp.nxtseq": "109241213",
+          "tcp.ack": "4240645942",
+          "tcp.ack_raw": "4240645942",
+          "tcp.hdr_len": "32",
+          "tcp.flags": "0x0018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ae": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ece": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "·······AP···"
+          },
+          "tcp.window_size_value": "512",
+          "tcp.window_size": "65536",
+          "tcp.window_size_scalefactor": "128",
+          "tcp.checksum": "0xfe36",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "01:01:08:0a:dc:08:5c:93:dc:08:5c:92",
+          "tcp.options_tree": {
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.timestamp": "08:0a:dc:08:5c:93:dc:08:5c:92",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "3691535507",
+              "tcp.options.timestamp.tsecr": "3691535506"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.008264000",
+            "tcp.time_delta": "0.000108000"
+          },
+          "tcp.payload": "02:fd:80:01:00:00:00:06:0e:00:e0:01:3e:80",
+          "tcp.pdu.size": "14"
+        },
+        "doip": {
+          "Header": {
+            "doip.version": "0x02",
+            "doip.inverse": "0xfd",
+            "doip.type": "0x8001",
+            "doip.length": "6"
+          },
+          "doip.source_address": "0x0e00",
+          "doip.target_address": "0xe001"
+        },
+        "uds": {
+          "uds.diag_addr_source": "0x0e00",
+          "uds.diag_addr_source_name": "3584",
+          "uds.diag_addr": "0x0e00",
+          "uds.diag_addr_name": "3584",
+          "uds.diag_addr_target": "0xe001",
+          "uds.diag_addr_target_name": "57345",
+          "uds.diag_addr": "0xe001",
+          "uds.diag_addr_name": "57345",
+          "uds.sid": "0x3e",
+          "uds.reply": "0x00",
+          "uds.subfunction": "0x80",
+          "uds.subfunction_tree": {
+            "uds.tp.subfunction_without_suppress": "0x00",
+            "uds.suppress_reply.indication": "1"
+          }
+        }
+      }
+    }
+  },
+  {
+    "_index": "packets-2024-09-18",
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Sep 18, 2024 10:21:47.334356000 W. Europe Daylight Time",
+          "frame.time_utc": "Sep 18, 2024 08:21:47.334356000 UTC",
+          "frame.time_epoch": "1726647707.334356000",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_delta": "0.001843000",
+          "frame.time_delta_displayed": "0.002816000",
+          "frame.time_relative": "0.047501000",
+          "frame.number": "44",
+          "frame.len": "80",
+          "frame.cap_len": "80",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:doip:uds",
+          "frame.coloring_rule.name": "TCP",
+          "frame.coloring_rule.string": "tcp"
+        },
+        "eth": {
+          "eth.dst": "00:00:00:00:00:00",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "00:00:00_00:00:00",
+            "eth.dst.oui": "0",
+            "eth.dst.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.dst.lg": "0",
+            "eth.dst.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "00:00:00:00:00:00",
+          "eth.src_tree": {
+            "eth.src_resolved": "00:00:00_00:00:00",
+            "eth.src.oui": "0",
+            "eth.src.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.src.lg": "0",
+            "eth.src.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x0800",
+          "eth.stream": "0"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "66",
+          "ip.id": "0xb338",
+          "ip.flags": "0x02",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0"
+          },
+          "ip.frag_offset": "0",
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x897b",
+          "ip.checksum.status": "1",
+          "ip.checksum_calculated": "0x897b",
+          "ip.src": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.src_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.dst": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.dst_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.stream": "0"
+        },
+        "tcp": {
+          "tcp.srcport": "13400",
+          "tcp.dstport": "41098",
+          "tcp.port": "13400",
+          "tcp.port": "41098",
+          "tcp.stream": "1",
+          "tcp.stream.pnum": "14",
+          "tcp.completeness": "31",
+          "tcp.completeness_tree": {
+            "tcp.completeness.rst": "0",
+            "tcp.completeness.fin": "1",
+            "tcp.completeness.data": "1",
+            "tcp.completeness.ack": "1",
+            "tcp.completeness.syn-ack": "1",
+            "tcp.completeness.syn": "1",
+            "tcp.completeness.str": "·FDASS"
+          },
+          "tcp.len": "14",
+          "tcp.seq": "4240645955",
+          "tcp.seq_raw": "4240645955",
+          "tcp.nxtseq": "4240645969",
+          "tcp.ack": "109241213",
+          "tcp.ack_raw": "109241213",
+          "tcp.hdr_len": "32",
+          "tcp.flags": "0x0018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ae": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ece": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "·······AP···"
+          },
+          "tcp.window_size_value": "512",
+          "tcp.window_size": "65536",
+          "tcp.window_size_scalefactor": "128",
+          "tcp.checksum": "0xfe36",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "01:01:08:0a:dc:08:5c:96:dc:08:5c:93",
+          "tcp.options_tree": {
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.timestamp": "08:0a:dc:08:5c:96:dc:08:5c:93",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "3691535510",
+              "tcp.options.timestamp.tsecr": "3691535507"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.011080000",
+            "tcp.time_delta": "0.001843000"
+          },
+          "tcp.payload": "02:fd:80:01:00:00:00:06:e0:01:0e:00:7e:80",
+          "tcp.pdu.size": "14"
+        },
+        "doip": {
+          "Header": {
+            "doip.version": "0x02",
+            "doip.inverse": "0xfd",
+            "doip.type": "0x8001",
+            "doip.length": "6"
+          },
+          "doip.source_address": "0xe001",
+          "doip.target_address": "0x0e00"
+        },
+        "uds": {
+          "uds.diag_addr_source": "0xe001",
+          "uds.diag_addr_source_name": "57345",
+          "uds.diag_addr": "0xe001",
+          "uds.diag_addr_name": "57345",
+          "uds.diag_addr_target": "0x0e00",
+          "uds.diag_addr_target_name": "3584",
+          "uds.diag_addr": "0x0e00",
+          "uds.diag_addr_name": "3584",
+          "uds.sid": "0x3e",
+          "uds.reply": "0x01",
+          "uds.subfunction": "0x80",
+          "uds.subfunction_tree": {
+            "uds.tp.subfunction_without_suppress": "0x00"
+          }
+        }
+      }
+    }
+  },
+  {
+    "_index": "packets-2024-09-18",
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Sep 18, 2024 10:21:47.334533000 W. Europe Daylight Time",
+          "frame.time_utc": "Sep 18, 2024 08:21:47.334533000 UTC",
+          "frame.time_epoch": "1726647707.334533000",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_delta": "0.000112000",
+          "frame.time_delta_displayed": "0.000177000",
+          "frame.time_relative": "0.047678000",
+          "frame.number": "46",
+          "frame.len": "81",
+          "frame.cap_len": "81",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:doip:uds",
+          "frame.coloring_rule.name": "TCP",
+          "frame.coloring_rule.string": "tcp"
+        },
+        "eth": {
+          "eth.dst": "00:00:00:00:00:00",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "00:00:00_00:00:00",
+            "eth.dst.oui": "0",
+            "eth.dst.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.dst.lg": "0",
+            "eth.dst.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "00:00:00:00:00:00",
+          "eth.src_tree": {
+            "eth.src_resolved": "00:00:00_00:00:00",
+            "eth.src.oui": "0",
+            "eth.src.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.src.lg": "0",
+            "eth.src.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x0800",
+          "eth.stream": "0"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "67",
+          "ip.id": "0x3b63",
+          "ip.flags": "0x02",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0"
+          },
+          "ip.frag_offset": "0",
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x0150",
+          "ip.checksum.status": "1",
+          "ip.checksum_calculated": "0x0150",
+          "ip.src": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.src_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.dst": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.dst_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.stream": "0"
+        },
+        "tcp": {
+          "tcp.srcport": "41098",
+          "tcp.dstport": "13400",
+          "tcp.port": "41098",
+          "tcp.port": "13400",
+          "tcp.stream": "1",
+          "tcp.stream.pnum": "16",
+          "tcp.completeness": "31",
+          "tcp.completeness_tree": {
+            "tcp.completeness.rst": "0",
+            "tcp.completeness.fin": "1",
+            "tcp.completeness.data": "1",
+            "tcp.completeness.ack": "1",
+            "tcp.completeness.syn-ack": "1",
+            "tcp.completeness.syn": "1",
+            "tcp.completeness.str": "·FDASS"
+          },
+          "tcp.len": "15",
+          "tcp.seq": "109241213",
+          "tcp.seq_raw": "109241213",
+          "tcp.nxtseq": "109241228",
+          "tcp.ack": "4240645969",
+          "tcp.ack_raw": "4240645969",
+          "tcp.hdr_len": "32",
+          "tcp.flags": "0x0018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ae": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ece": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "·······AP···"
+          },
+          "tcp.window_size_value": "512",
+          "tcp.window_size": "65536",
+          "tcp.window_size_scalefactor": "128",
+          "tcp.checksum": "0xfe37",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "01:01:08:0a:dc:08:5c:96:dc:08:5c:94",
+          "tcp.options_tree": {
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.timestamp": "08:0a:dc:08:5c:96:dc:08:5c:94",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "3691535510",
+              "tcp.options.timestamp.tsecr": "3691535508"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.011257000",
+            "tcp.time_delta": "0.000112000"
+          },
+          "tcp.payload": "02:fd:80:01:00:00:00:07:0e:00:e0:01:22:f1:90",
+          "tcp.pdu.size": "15"
+        },
+        "doip": {
+          "Header": {
+            "doip.version": "0x02",
+            "doip.inverse": "0xfd",
+            "doip.type": "0x8001",
+            "doip.length": "7"
+          },
+          "doip.source_address": "0x0e00",
+          "doip.target_address": "0xe001"
+        },
+        "uds": {
+          "uds.diag_addr_source": "0x0e00",
+          "uds.diag_addr_source_name": "3584",
+          "uds.diag_addr": "0x0e00",
+          "uds.diag_addr_name": "3584",
+          "uds.diag_addr_target": "0xe001",
+          "uds.diag_addr_target_name": "57345",
+          "uds.diag_addr": "0xe001",
+          "uds.diag_addr_name": "57345",
+          "uds.sid": "0x22",
+          "uds.reply": "0x00",
+          "uds.rdbi.data_identifier": "0xf190"
+        }
+      }
+    }
+  },
+  {
+    "_index": "packets-2024-09-18",
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Sep 18, 2024 10:21:47.336832000 W. Europe Daylight Time",
+          "frame.time_utc": "Sep 18, 2024 08:21:47.336832000 UTC",
+          "frame.time_epoch": "1726647707.336832000",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_delta": "0.001624000",
+          "frame.time_delta_displayed": "0.002299000",
+          "frame.time_relative": "0.049977000",
+          "frame.number": "48",
+          "frame.len": "98",
+          "frame.cap_len": "98",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:doip:uds",
+          "frame.coloring_rule.name": "TCP",
+          "frame.coloring_rule.string": "tcp"
+        },
+        "eth": {
+          "eth.dst": "00:00:00:00:00:00",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "00:00:00_00:00:00",
+            "eth.dst.oui": "0",
+            "eth.dst.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.dst.lg": "0",
+            "eth.dst.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "00:00:00:00:00:00",
+          "eth.src_tree": {
+            "eth.src_resolved": "00:00:00_00:00:00",
+            "eth.src.oui": "0",
+            "eth.src.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.src.lg": "0",
+            "eth.src.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x0800",
+          "eth.stream": "0"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "84",
+          "ip.id": "0xb33a",
+          "ip.flags": "0x02",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0"
+          },
+          "ip.frag_offset": "0",
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x8967",
+          "ip.checksum.status": "1",
+          "ip.checksum_calculated": "0x8967",
+          "ip.src": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.src_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.dst": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.dst_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.stream": "0"
+        },
+        "tcp": {
+          "tcp.srcport": "13400",
+          "tcp.dstport": "41098",
+          "tcp.port": "13400",
+          "tcp.port": "41098",
+          "tcp.stream": "1",
+          "tcp.stream.pnum": "18",
+          "tcp.completeness": "31",
+          "tcp.completeness_tree": {
+            "tcp.completeness.rst": "0",
+            "tcp.completeness.fin": "1",
+            "tcp.completeness.data": "1",
+            "tcp.completeness.ack": "1",
+            "tcp.completeness.syn-ack": "1",
+            "tcp.completeness.syn": "1",
+            "tcp.completeness.str": "·FDASS"
+          },
+          "tcp.len": "32",
+          "tcp.seq": "4240645982",
+          "tcp.seq_raw": "4240645982",
+          "tcp.nxtseq": "4240646014",
+          "tcp.ack": "109241228",
+          "tcp.ack_raw": "109241228",
+          "tcp.hdr_len": "32",
+          "tcp.flags": "0x0018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ae": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ece": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "·······AP···"
+          },
+          "tcp.window_size_value": "512",
+          "tcp.window_size": "65536",
+          "tcp.window_size_scalefactor": "128",
+          "tcp.checksum": "0xfe48",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "01:01:08:0a:dc:08:5c:99:dc:08:5c:96",
+          "tcp.options_tree": {
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.timestamp": "08:0a:dc:08:5c:99:dc:08:5c:96",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "3691535513",
+              "tcp.options.timestamp.tsecr": "3691535510"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.013556000",
+            "tcp.time_delta": "0.001624000"
+          },
+          "tcp.payload": "02:fd:80:01:00:00:00:18:e0:01:0e:00:62:f1:90:4d:41:54:31:32:33:34:35:36:37:38:39:30:31:32:33:34",
+          "tcp.pdu.size": "32"
+        },
+        "doip": {
+          "Header": {
+            "doip.version": "0x02",
+            "doip.inverse": "0xfd",
+            "doip.type": "0x8001",
+            "doip.length": "24"
+          },
+          "doip.source_address": "0xe001",
+          "doip.target_address": "0x0e00"
+        },
+        "uds": {
+          "uds.diag_addr_source": "0xe001",
+          "uds.diag_addr_source_name": "57345",
+          "uds.diag_addr": "0xe001",
+          "uds.diag_addr_name": "57345",
+          "uds.diag_addr_target": "0x0e00",
+          "uds.diag_addr_target_name": "3584",
+          "uds.diag_addr": "0x0e00",
+          "uds.diag_addr_name": "3584",
+          "uds.sid": "0x22",
+          "uds.reply": "0x01",
+          "uds.rdbi.data_identifier": "0xf190",
+          "uds.did_f190.vin": "MAT12345678901234"
+        }
+      }
+    }
+  },
+  {
+    "_index": "packets-2024-09-18",
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Sep 18, 2024 10:21:47.337026000 W. Europe Daylight Time",
+          "frame.time_utc": "Sep 18, 2024 08:21:47.337026000 UTC",
+          "frame.time_epoch": "1726647707.337026000",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_delta": "0.000167000",
+          "frame.time_delta_displayed": "0.000194000",
+          "frame.time_relative": "0.050171000",
+          "frame.number": "50",
+          "frame.len": "80",
+          "frame.cap_len": "80",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:doip:uds",
+          "frame.coloring_rule.name": "TCP",
+          "frame.coloring_rule.string": "tcp"
+        },
+        "eth": {
+          "eth.dst": "00:00:00:00:00:00",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "00:00:00_00:00:00",
+            "eth.dst.oui": "0",
+            "eth.dst.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.dst.lg": "0",
+            "eth.dst.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "00:00:00:00:00:00",
+          "eth.src_tree": {
+            "eth.src_resolved": "00:00:00_00:00:00",
+            "eth.src.oui": "0",
+            "eth.src.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.src.lg": "0",
+            "eth.src.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x0800",
+          "eth.stream": "0"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "66",
+          "ip.id": "0x3b65",
+          "ip.flags": "0x02",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0"
+          },
+          "ip.frag_offset": "0",
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x014f",
+          "ip.checksum.status": "1",
+          "ip.checksum_calculated": "0x014f",
+          "ip.src": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.src_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.dst": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.dst_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.stream": "0"
+        },
+        "tcp": {
+          "tcp.srcport": "41098",
+          "tcp.dstport": "13400",
+          "tcp.port": "41098",
+          "tcp.port": "13400",
+          "tcp.stream": "1",
+          "tcp.stream.pnum": "20",
+          "tcp.completeness": "31",
+          "tcp.completeness_tree": {
+            "tcp.completeness.rst": "0",
+            "tcp.completeness.fin": "1",
+            "tcp.completeness.data": "1",
+            "tcp.completeness.ack": "1",
+            "tcp.completeness.syn-ack": "1",
+            "tcp.completeness.syn": "1",
+            "tcp.completeness.str": "·FDASS"
+          },
+          "tcp.len": "14",
+          "tcp.seq": "109241228",
+          "tcp.seq_raw": "109241228",
+          "tcp.nxtseq": "109241242",
+          "tcp.ack": "4240646014",
+          "tcp.ack_raw": "4240646014",
+          "tcp.hdr_len": "32",
+          "tcp.flags": "0x0018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ae": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ece": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "·······AP···"
+          },
+          "tcp.window_size_value": "512",
+          "tcp.window_size": "65536",
+          "tcp.window_size_scalefactor": "128",
+          "tcp.checksum": "0xfe36",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "01:01:08:0a:dc:08:5c:99:dc:08:5c:97",
+          "tcp.options_tree": {
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.timestamp": "08:0a:dc:08:5c:99:dc:08:5c:97",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "3691535513",
+              "tcp.options.timestamp.tsecr": "3691535511"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.013750000",
+            "tcp.time_delta": "0.000167000"
+          },
+          "tcp.payload": "02:fd:80:01:00:00:00:06:0e:00:e0:01:10:01",
+          "tcp.pdu.size": "14"
+        },
+        "doip": {
+          "Header": {
+            "doip.version": "0x02",
+            "doip.inverse": "0xfd",
+            "doip.type": "0x8001",
+            "doip.length": "6"
+          },
+          "doip.source_address": "0x0e00",
+          "doip.target_address": "0xe001"
+        },
+        "uds": {
+          "uds.diag_addr_source": "0x0e00",
+          "uds.diag_addr_source_name": "3584",
+          "uds.diag_addr": "0x0e00",
+          "uds.diag_addr_name": "3584",
+          "uds.diag_addr_target": "0xe001",
+          "uds.diag_addr_target_name": "57345",
+          "uds.diag_addr": "0xe001",
+          "uds.diag_addr_name": "57345",
+          "uds.sid": "0x10",
+          "uds.reply": "0x00",
+          "uds.dsc.suppress_reply.indication": "0",
+          "uds.dsc.subfunction": "0x01"
+        }
+      }
+    }
+  },
+  {
+    "_index": "packets-2024-09-18",
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Sep 18, 2024 10:21:47.338771000 W. Europe Daylight Time",
+          "frame.time_utc": "Sep 18, 2024 08:21:47.338771000 UTC",
+          "frame.time_epoch": "1726647707.338771000",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_delta": "0.001129000",
+          "frame.time_delta_displayed": "0.001745000",
+          "frame.time_relative": "0.051916000",
+          "frame.number": "52",
+          "frame.len": "81",
+          "frame.cap_len": "81",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:doip:uds",
+          "frame.coloring_rule.name": "TCP",
+          "frame.coloring_rule.string": "tcp"
+        },
+        "eth": {
+          "eth.dst": "00:00:00:00:00:00",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "00:00:00_00:00:00",
+            "eth.dst.oui": "0",
+            "eth.dst.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.dst.lg": "0",
+            "eth.dst.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "00:00:00:00:00:00",
+          "eth.src_tree": {
+            "eth.src_resolved": "00:00:00_00:00:00",
+            "eth.src.oui": "0",
+            "eth.src.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.src.lg": "0",
+            "eth.src.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x0800",
+          "eth.stream": "0"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "67",
+          "ip.id": "0xb33c",
+          "ip.flags": "0x02",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0"
+          },
+          "ip.frag_offset": "0",
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x8976",
+          "ip.checksum.status": "1",
+          "ip.checksum_calculated": "0x8976",
+          "ip.src": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.src_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.dst": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.dst_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.stream": "0"
+        },
+        "tcp": {
+          "tcp.srcport": "13400",
+          "tcp.dstport": "41098",
+          "tcp.port": "13400",
+          "tcp.port": "41098",
+          "tcp.stream": "1",
+          "tcp.stream.pnum": "22",
+          "tcp.completeness": "31",
+          "tcp.completeness_tree": {
+            "tcp.completeness.rst": "0",
+            "tcp.completeness.fin": "1",
+            "tcp.completeness.data": "1",
+            "tcp.completeness.ack": "1",
+            "tcp.completeness.syn-ack": "1",
+            "tcp.completeness.syn": "1",
+            "tcp.completeness.str": "·FDASS"
+          },
+          "tcp.len": "15",
+          "tcp.seq": "4240646027",
+          "tcp.seq_raw": "4240646027",
+          "tcp.nxtseq": "4240646042",
+          "tcp.ack": "109241242",
+          "tcp.ack_raw": "109241242",
+          "tcp.hdr_len": "32",
+          "tcp.flags": "0x0018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ae": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ece": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "·······AP···"
+          },
+          "tcp.window_size_value": "512",
+          "tcp.window_size": "65536",
+          "tcp.window_size_scalefactor": "128",
+          "tcp.checksum": "0xfe37",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "01:01:08:0a:dc:08:5c:9b:dc:08:5c:99",
+          "tcp.options_tree": {
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.timestamp": "08:0a:dc:08:5c:9b:dc:08:5c:99",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "3691535515",
+              "tcp.options.timestamp.tsecr": "3691535513"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.015495000",
+            "tcp.time_delta": "0.001129000"
+          },
+          "tcp.payload": "02:fd:80:01:00:00:00:07:e0:01:0e:00:7f:10:12",
+          "tcp.pdu.size": "15"
+        },
+        "doip": {
+          "Header": {
+            "doip.version": "0x02",
+            "doip.inverse": "0xfd",
+            "doip.type": "0x8001",
+            "doip.length": "7"
+          },
+          "doip.source_address": "0xe001",
+          "doip.target_address": "0x0e00"
+        },
+        "uds": {
+          "uds.diag_addr_source": "0xe001",
+          "uds.diag_addr_source_name": "57345",
+          "uds.diag_addr": "0xe001",
+          "uds.diag_addr_name": "57345",
+          "uds.diag_addr_target": "0x0e00",
+          "uds.diag_addr_target_name": "3584",
+          "uds.diag_addr": "0x0e00",
+          "uds.diag_addr_name": "3584",
+          "uds.sid": "0x3f",
+          "uds.reply": "0x01",
+          "uds.err.sid": "0x10",
+          "uds.err.code": "0x12"
+        }
+      }
+    }
+  }
+]

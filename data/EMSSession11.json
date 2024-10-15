@@ -1,0 +1,194 @@
+[
+  {
+    "_index": "packets-2024-09-18",
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Sep 18, 2024 10:19:20.104351000 W. Europe Daylight Time",
+          "frame.time_utc": "Sep 18, 2024 08:19:20.104351000 UTC",
+          "frame.time_epoch": "1726647560.104351000",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_delta": "0.000000000",
+          "frame.time_delta_displayed": "0.000000000",
+          "frame.time_relative": "0.000000000",
+          "frame.number": "1",
+          "frame.len": "74",
+          "frame.cap_len": "74",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp",
+          "frame.coloring_rule.name": "TCP SYN/FIN",
+          "frame.coloring_rule.string": "tcp.flags & 0x02 || tcp.flags.fin == 1"
+        },
+        "eth": {
+          "eth.dst": "00:00:00:00:00:00",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "00:00:00_00:00:00",
+            "eth.dst.oui": "0",
+            "eth.dst.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.dst.lg": "0",
+            "eth.dst.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "00:00:00:00:00:00",
+          "eth.src_tree": {
+            "eth.src_resolved": "00:00:00_00:00:00",
+            "eth.src.oui": "0",
+            "eth.src.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.src.lg": "0",
+            "eth.src.ig": "0",
+            "eth.addr": "00:00:00:00:00:00",
+            "eth.addr_resolved": "00:00:00_00:00:00",
+            "eth.addr.oui": "0",
+            "eth.addr.oui_resolved": "Officially Xerox, but 0:0:0:0:0:0 is more common",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x0800",
+          "eth.stream": "0"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "60",
+          "ip.id": "0x36cf",
+          "ip.flags": "0x02",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0"
+          },
+          "ip.frag_offset": "0",
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x05eb",
+          "ip.checksum.status": "1",
+          "ip.checksum_calculated": "0x05eb",
+          "ip.src": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.src_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.dst": "127.0.0.1",
+          "ip.addr": "127.0.0.1",
+          "ip.dst_host": "kubernetes.docker.internal",
+          "ip.host": "kubernetes.docker.internal",
+          "ip.stream": "0"
+        },
+        "tcp": {
+          "tcp.srcport": "58910",
+          "tcp.dstport": "13400",
+          "tcp.port": "58910",
+          "tcp.port": "13400",
+          "tcp.stream": "0",
+          "tcp.stream.pnum": "1",
+          "tcp.completeness": "31",
+          "tcp.completeness_tree": {
+            "tcp.completeness.rst": "0",
+            "tcp.completeness.fin": "1",
+            "tcp.completeness.data": "1",
+            "tcp.completeness.ack": "1",
+            "tcp.completeness.syn-ack": "1",
+            "tcp.completeness.syn": "1",
+            "tcp.completeness.str": "·FDASS"
+          },
+          "tcp.len": "0",
+          "tcp.seq": "51440794",
+          "tcp.seq_raw": "51440794",
+          "tcp.nxtseq": "51440795",
+          "tcp.ack": "0",
+          "tcp.ack_raw": "0",
+          "tcp.hdr_len": "40",
+          "tcp.flags": "0x0002",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ae": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ece": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "0",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "1",
+            "tcp.flags.syn_tree": {
+              "_ws.expert": {
+                "tcp.connection.syn": "",
+                "_ws.expert.message": "Connection establish request (SYN): server port 13400",
+                "_ws.expert.severity": "2097152",
+                "_ws.expert.group": "33554432"
+              }
+            },
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "··········S·"
+          },
+          "tcp.window_size_value": "65495",
+          "tcp.window_size": "65495",
+          "tcp.checksum": "0xfe30",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "02:04:ff:d7:04:02:08:0a:dc:06:1d:78:00:00:00:00:01:03:03:07",
+          "tcp.options_tree": {
+            "tcp.options.mss": "02:04:ff:d7",
+            "tcp.options.mss_tree": {
+              "tcp.option_kind": "2",
+              "tcp.option_len": "4",
+              "tcp.options.mss_val": "65495"
+            },
+            "tcp.options.sack_perm": "04:02",
+            "tcp.options.sack_perm_tree": {
+              "tcp.option_kind": "4",
+              "tcp.option_len": "2"
+            },
+            "tcp.options.timestamp": "08:0a:dc:06:1d:78:00:00:00:00",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "3691388280",
+              "tcp.options.timestamp.tsecr": "0"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.wscale": "03:03:07",
+            "tcp.options.wscale_tree": {
+              "tcp.option_kind": "3",
+              "tcp.option_len": "3",
+              "tcp.options.wscale.shift": "7",
+              "tcp.options.wscale.multiplier": "128"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000000000",
+            "tcp.time_delta": "0.000000000"
+          }
+        },
+        "transum": {
+          "transum.status": "OK",
+          "transum.firstreq": "1",
+          "transum.lastreq": "1",
+          "transum.firstrsp": "2",
+          "transum.lastrsp": "2",
+          "transum.art": "0.000006000",
+          "transum.st": "0.000006000",
+          "transum.reqspread": "0.000000000",
+          "transum.rspspread": "0.000000000",
+          "transum.clip_filter": "tcp.stream==0 && frame.number>=1 && frame.number<=2",
+          "transum.calculation": "SYN and SYN/ACK"
+        }
+      }
+    }
+  }
+]
