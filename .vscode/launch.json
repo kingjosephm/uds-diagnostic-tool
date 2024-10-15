@@ -1,0 +1,19 @@
+{   
+    "version": "0.1.0",
+    "configurations": [
+      {
+        "name": "engineer_data",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${workspaceFolder}/engineer_data.py",
+        "console": "integratedTerminal",
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYDEVD_UNBLOCK_THREADS_TIMEOUT": "0",
+          "PYDEVD_WARN_EVALUATION_TIMEOUT": "30",
+          "PYDEVD_WARN_SLOW_RESOLVE_TIMEOUT": "15"},
+        "args": [],
+      },
+
+    ]
+  }
