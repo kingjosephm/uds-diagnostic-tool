@@ -20,7 +20,9 @@ dependencies:
   - certifi=2024.8.30
   - cffi=1.17.1
   - charset-normalizer=3.4.0
+  - click=8.1.7
   - comm=0.2.2
+  - dataclasses-json=0.6.5
   - debugpy=1.6.7
   - decorator=5.1.1
   - exceptiongroup=1.2.2
@@ -44,6 +46,7 @@ dependencies:
   - jupyter_client=8.6.3
   - jupyter_core=5.7.2
   - langchain=0.3.3
+  - langchain-community=0.3.2
   - langchain-core=0.3.10
   - langchain-text-splitters=0.3.0
   - langsmith=0.1.129
@@ -55,8 +58,10 @@ dependencies:
   - libsodium=1.0.18
   - llvm-openmp=14.0.6
   - lz4-c=1.9.4
+  - marshmallow=3.19.0
   - matplotlib-inline=0.1.7
   - multidict=6.0.4
+  - mypy_extensions=1.0.0
   - ncurses=6.4
   - nest-asyncio=1.6.0
   - numexpr=2.8.7
@@ -78,10 +83,12 @@ dependencies:
   - pycparser=2.22
   - pydantic=2.8.2
   - pydantic-core=2.20.1
+  - pydantic-settings=2.5.2
   - pygments=2.18.0
   - pysocks=1.7.1
   - python=3.12.7
   - python-dateutil=2.9.0post0
+  - python-dotenv=0.21.0
   - python-tzdata=2023.3
   - pytz=2024.1
   - pyyaml=6.0.2
@@ -100,6 +107,7 @@ dependencies:
   - traitlets=5.14.3
   - typing-extensions=4.12.2
   - typing_extensions=4.12.2
+  - typing_inspect=0.9.0
   - tzdata=2024b
   - urllib3=2.2.3
   - wcwidth=0.2.13
