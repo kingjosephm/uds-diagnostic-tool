@@ -1,6 +1,7 @@
 import os
-import json
 import pyshark
+import pandas as pd
+
 
 
 if __name__ == '__main__':
@@ -23,14 +24,16 @@ if __name__ == '__main__':
                     'destination': packet.ip.dst if hasattr(packet, 'ip') else 'N/A',  # Destination IP if present
                     # Extract data from the appropriate layer
                     #'data': packet.isotp_raw if hasattr(packet, 'isotp') else (packet.uds_raw if hasattr(packet, 'uds') else 'N/A')
-                    'data': packet.uds_raw.value
+                    'reply': packet.uds_raw.value
                 }
                 
                 # Store the packet info in the dictionary, using packet number as the key
                 uds_packets[packet.number] = packet_info
-    
-        with open(f"./data/{file.strip('.pcap')}.json", 'w') as f:
-            json.dump(uds_packets, f)
+            
+        df = pd.DataFrame(uds_packets).T
+        df.index.name = 'packet_number'
+        df.to_csv(f"./data/{file.strip('.pcap')}.csv")
+        
             
         # Close the capture once done
         capture.close()
