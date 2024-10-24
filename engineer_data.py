@@ -6,6 +6,8 @@ import pandas as pd
 
 if __name__ == '__main__':
     
+    restrict_uds_only = False
+    
     dir_contents = [i for i in os.listdir("./data") if ".pcap" in i]
     
     for file in dir_contents:
@@ -16,23 +18,32 @@ if __name__ == '__main__':
         
         # Iterate through each packet
         for packet in capture:
-            # Check if the packet has the ISO-TP or UDS layer
-            if hasattr(packet, 'isotp') or hasattr(packet, 'uds'):
+            
+            if packet.highest_layer.split('_')[0] in ['DOIP', 'UDS']:
+                
+                
                 packet_info = {
+                    'number': packet.number,  # Packet number
                     'timestamp': packet.sniff_time.strftime("%Y-%m-%d %H:%M:%S"),  # Time of packet capture
-                    'source': packet.ip.src if hasattr(packet, 'ip') else 'N/A',  # Source IP if present
-                    'destination': packet.ip.dst if hasattr(packet, 'ip') else 'N/A',  # Destination IP if present
-                    # Extract data from the appropriate layer
-                    #'data': packet.isotp_raw if hasattr(packet, 'isotp') else (packet.uds_raw if hasattr(packet, 'uds') else 'N/A')
-                    'reply': packet.uds_raw.value
+                    'protocol': packet.highest_layer.split('_')[0],  # overall protocol
+                    'length': packet.length,
+                    'source': packet.doip.source_address if hasattr(packet.doip, 'source_address') else 'N/A',
+                    'target': packet.doip.target_address if hasattr(packet.doip, 'target_address') else 'N/A',
+                    'doip': packet.doip_raw.value,
+                    'uds': packet.uds_raw.value if hasattr(packet, 'uds_raw') else 'N/A'
                 }
+                
+                # Separate the DOIP and UDS data into bytes
+                for key in ['doip', 'uds']:
+                    packet_info[key] = ':'.join([packet_info[key][i:i+2] for i in range(0, len(packet_info[key]), 2) if packet_info[key] != 'N/A'])
+                
                 
                 # Store the packet info in the dictionary, using packet number as the key
                 uds_packets[packet.number] = packet_info
             
         df = pd.DataFrame(uds_packets).T
-        df.index.name = 'packet_number'
-        df.to_csv(f"./data/{file.strip('.pcap')}.csv")
+        df['uds'] = df['uds'].replace('', 'N/A')
+        df.to_excel(f"./data/{file.strip('.pcap')}.xlsx", index=False)
         
             
         # Close the capture once done
