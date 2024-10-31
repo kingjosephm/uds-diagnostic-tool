@@ -35,7 +35,7 @@ if __name__ == '__main__':
                 
                 # Separate the DOIP and UDS data into bytes
                 for key in ['doip', 'uds']:
-                    packet_info[key] = ':'.join([packet_info[key][i:i+2] for i in range(0, len(packet_info[key]), 2) if packet_info[key] != 'N/A'])
+                    packet_info[key] = ':'.join(["0x" + packet_info[key][i:i+2] for i in range(0, len(packet_info[key]), 2) if packet_info[key] != 'N/A'])
                 
                 
                 # Store the packet info in the dictionary, using packet number as the key
@@ -43,7 +43,7 @@ if __name__ == '__main__':
             
         df = pd.DataFrame(uds_packets).T
         df['uds'] = df['uds'].replace('', 'N/A')
-        df.to_excel(f"./data/{file.strip('.pcap')}.xlsx", index=False)
+        df.to_excel(f"./data/{file.split('.')[0]}.xlsx", index=False)
         
             
         # Close the capture once done
