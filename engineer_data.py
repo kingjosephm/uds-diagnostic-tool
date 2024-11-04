@@ -33,10 +33,15 @@ if __name__ == '__main__':
                     'uds': packet.uds_raw.value if hasattr(packet, 'uds_raw') else 'N/A'
                 }
                 
-                # Separate the DOIP and UDS data into bytes
+                # Separate the DOIP and UDS data into bytes and capitalize the letters
                 for key in ['doip', 'uds']:
-                    packet_info[key] = ':'.join(["0x" + packet_info[key][i:i+2] for i in range(0, len(packet_info[key]), 2) if packet_info[key] != 'N/A'])
-                
+                    if packet_info[key] != 'N/A':
+                        packet_info[key] = ':'.join([
+                            "0x" + ''.join([char.upper() if char.isalpha() else char for char in packet_info[key][i:i+2]])
+                            for i in range(0, len(packet_info[key]), 2)
+                        ])
+                    else:
+                        packet_info[key] = 'N/A'  # Keep it as 'N/A' if it meets the condition
                 
                 # Store the packet info in the dictionary, using packet number as the key
                 uds_packets[packet.number] = packet_info
