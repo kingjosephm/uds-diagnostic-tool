@@ -2,12 +2,12 @@
     "version": "0.1.0",
     "configurations": [
       {
-        "name": "engineer_data",
+        "name": "Python Debugger: Current File",
         "type": "debugpy",
         "request": "launch",
-        "program": "${workspaceFolder}/engineer_data.py",
+        "program": "${file}",
         "console": "integratedTerminal",
-        "cwd": "${workspaceFolder}",
+        "cwd": "${fileDirname}",
         "env": {
           "PYDEVD_UNBLOCK_THREADS_TIMEOUT": "0",
           "PYDEVD_WARN_EVALUATION_TIMEOUT": "30",
