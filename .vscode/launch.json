@@ -7,7 +7,7 @@
         "request": "launch",
         "program": "${file}",
         "console": "integratedTerminal",
-        "cwd": "${fileDirname}",
+        "cwd": "${workspaceFolder}",
         "env": {
           "PYDEVD_UNBLOCK_THREADS_TIMEOUT": "0",
           "PYDEVD_WARN_EVALUATION_TIMEOUT": "30",
