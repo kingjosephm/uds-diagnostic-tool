@@ -19,7 +19,7 @@ if __name__ == '__main__':
         # Iterate through each packet
         for packet in capture:
             
-            if packet.highest_layer.split('_')[0] in ['DOIP', 'UDS']:
+            if packet.highest_layer.split('_')[0] in ['UDS']:
                 
                 
                 packet_info = {
@@ -30,24 +30,27 @@ if __name__ == '__main__':
                     'source': packet.doip.source_address if hasattr(packet.doip, 'source_address') else 'N/A',
                     'target': packet.doip.target_address if hasattr(packet.doip, 'target_address') else 'N/A',
                     'doip': packet.doip_raw.value,
-                    'uds': packet.uds_raw.value if hasattr(packet, 'uds_raw') else 'N/A'
+                    'sid': packet.uds.sid if hasattr(packet.uds, 'sid') else 'N/A',
+                    'reply': packet.uds.reply if hasattr(packet.uds, 'reply') else 'N/A',
                 }
                 
                 # Separate the DOIP and UDS data into bytes and capitalize the letters
-                for key in ['doip', 'uds']:
+                for key in ['doip']:
                     if packet_info[key] != 'N/A':
                         packet_info[key] = ':'.join([
                             "0x" + ''.join([char.upper() if char.isalpha() else char for char in packet_info[key][i:i+2]])
                             for i in range(0, len(packet_info[key]), 2)
                         ])
-                    else:
-                        packet_info[key] = 'N/A'  # Keep it as 'N/A' if it meets the condition
                 
+                # Capitalize the letters in the SID and Reply fields
+                for key in ['sid', 'reply']:  # assumes only one byte
+                    if packet_info[key] != 'N/A':
+                        packet_info[key] = ''.join([char.upper() if char.isalpha() and char != 'x' else char for char in packet_info[key]])                
+                    
                 # Store the packet info in the dictionary, using packet number as the key
                 uds_packets[packet.number] = packet_info
             
         df = pd.DataFrame(uds_packets).T
-        df['uds'] = df['uds'].replace('', 'N/A')
         df.to_excel(f"./data/{file.split('.')[0]}.xlsx", index=False)
         
             
