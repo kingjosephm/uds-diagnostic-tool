@@ -27,7 +27,7 @@ if __name__ == '__main__':
     df = pd.concat([service_codes, negative_response_codes], ignore_index=True).sort_values(by=['Code', 'Type'], ascending=[True, False]).reset_index(drop=True)
     
     # Create a connection to the SQLite database (this will create it if it doesn’t exist)
-    conn = sqlite3.connect('lookup/uds_lookup.db')
+    conn = sqlite3.connect('lookup/uds_codes.db')
     cursor = conn.cursor()
     
     # Write df to new table in SQLite, or overwrite existing table
