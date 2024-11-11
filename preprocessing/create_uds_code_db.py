@@ -71,6 +71,7 @@ if __name__ == '__main__':
     # Create unified DataFrame
     cols = ['Code', 'Type', 'Summary']
     df = pd.concat([service_codes[cols], negative_response_codes[cols]], ignore_index=True).sort_values(by=['Code', 'Type'], ascending=[True, False]).reset_index(drop=True)
+    assert df.duplicated(subset=['Code', 'Type']).sum() == 0  # ensure no duplicates
     
     # Create a connection to the SQLite database (this will create it if it doesn’t exist)
     conn = sqlite3.connect('lookup/uds_codes.db')
