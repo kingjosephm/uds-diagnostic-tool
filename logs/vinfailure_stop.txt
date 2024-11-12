@@ -1,0 +1,11 @@
+Creating summaries of each request-response message pair... 
+
+1      Client connects to vehicle; server responds with a reserved negative response code.
+2      Client connection established; however, requested service code not found (NRC).
+3      Client connects to vehicle; server responds with a reserved negative response code.
+4      Client connection request received; response indicates "Code not found" (NRC).
+5      Client requests data; server responds with a negative response code for internal use.
+6      Request and response indicate that the requested code was not found (NRC: 0x31).
+
+Overall summary: 
+ The negative responses suggest potential issues with service availability or miscommunication between the client and server.

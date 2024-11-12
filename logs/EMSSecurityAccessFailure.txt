@@ -1,0 +1,24 @@
+Creating summaries of each request-response message pair... 
+
+ 1      Client connects to vehicle; server responds with a reserved negative response code.
+ 2      Client connection request received; response indicates code not found (NRC).
+ 3      Client connects to vehicle; server responds with a reserved negative response code.
+ 4      Client connection request received; response indicates "Code not found" (NRC).
+ 5      Client requests data records; server responds with a negative response code for internal use.
+ 6      Client requested data records; server responded with "Code not found" (NRC).
+ 7      Request for diagnostic session control received a negative response code for internal implementation.
+ 8      Request for diagnostic session control; response indicates code not found (NRC).
+ 9      Client connects to vehicle; server responds with a reserved negative response code.
+10      Client connection established; however, requested service code not found (NRC).
+11      Client connects to vehicle; server responds with a reserved negative response code.
+12      Client connection established; however, the requested service code was not found.
+13      Client requests data records; server responds with a negative response code for internal use.
+14      Client requested data records; server responded with "Code not found" (NRC).
+15      Request for diagnostic session control received; response indicates reserved positive code for internal use.
+16      Security Access request received; response indicates a reserved positive response for internal use.
+17      Security Access request failed; response indicates "Code not found" (NRC).
+18      Security Access request received; response indicates internal implementation with a negative response code.
+19      Request and response indicate a "Code not found" error in UDS communication.
+
+Overall summary: 
+ The negative responses suggest issues with client-server communication, indicating potential limitations or misconfigurations in the system's service codes.
