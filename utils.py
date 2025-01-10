@@ -25,7 +25,7 @@ async def read_pcap_file(file_path: str) -> pd.DataFrame:
     # Iterate through each packet, collecting as dictionary
     for packet in capture:
         
-        if packet.highest_layer.split('_')[0] in ['UDS']:  # note - only keeps UDS packets
+        if hasattr(packet, "uds"):  # note - only keeps UDS packets
             
             packet_info = {
                 'number': packet.number,  # Packet number
