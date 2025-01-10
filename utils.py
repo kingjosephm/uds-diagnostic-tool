@@ -1,5 +1,7 @@
 import pandas as pd
 import pyshark
+import sqlite3
+import numpy as np
 
 
 async def read_pcap_file(file_path: str) -> pd.DataFrame:
@@ -30,11 +32,11 @@ async def read_pcap_file(file_path: str) -> pd.DataFrame:
             packet_info = {
                 'number': packet.number,  # Packet number
                 'timestamp': packet.sniff_time.strftime("%Y-%m-%d %H:%M:%S"),  # Time of packet capture
-                'source': packet.doip.source_address if hasattr(packet.doip, 'source_address') else 'N/A',
-                'target': packet.doip.target_address if hasattr(packet.doip, 'target_address') else 'N/A',
+                'source': packet.doip.source_address if hasattr(packet.doip, 'source_address') else None,
+                'target': packet.doip.target_address if hasattr(packet.doip, 'target_address') else None,
                 'request': True if packet.uds.reply == '0x00' else False,  # misnomer, this is request code if '0x00'. Reply codes are '0x01'
-                'sid': 'N/A',  # Service ID, fill in below
-                'error': 'N/A',  # alter below, if present
+                'sid': None,  # Service ID, fill in below
+                'error': None,  # alter below, if present
             }
             
             if packet_info['request']:
@@ -46,7 +48,7 @@ async def read_pcap_file(file_path: str) -> pd.DataFrame:
             
             # Capitalize the letters in the SID and Reply fields
             for key in ['sid', 'error']:  # assumes only one byte
-                if packet_info[key] != 'N/A':
+                if packet_info[key] is not None:
                     packet_info[key] = ''.join([char.upper() if char.isalpha() and char != 'x' else char for char in packet_info[key]])                
                 
             # Store the packet info in the dictionary, using packet number as the key
@@ -90,4 +92,41 @@ def combine_request_reply(df: pd.DataFrame) -> pd.DataFrame:
             
             combined.append([reply['source'].values[0], request['sid'], reply['sid'].values[0], reply['error'].values[0]])
     
-    return pd.DataFrame(combined, columns=['ecu_address', 'request_sid', 'reply_sid', 'error'])
+    reply_request = pd.DataFrame(combined, columns=['ecu_address', 'request_sid', 'reply_sid', 'error'])
+    
+    # Merge error codes with the negative response codes (if present)
+    if reply_request['error'].notnull().mean() > 0:
+    
+        reply_request = merge_error_codes(reply_request)
+    
+    else:
+        reply_request['error'] = 'No error'
+    
+    return reply_request
+    
+
+def merge_error_codes(df: pd.DataFrame) -> pd.DataFrame:
+    """Merges the error codes with the negative response codes from the lookup table. Any missing error codes are filled
+    with 'Unknown error'. Rows with no error codes are filled with 'No error'.
+
+    Args:
+        df (pd.DataFrame): DataFrame with error codes
+
+    Returns:
+        pd.DataFrame: DataFrame with descriptions of the error codes rather than the codes themselves
+    """
+    # Load the negative response codes from the SQLite database
+    conn = sqlite3.connect('lookup/nrc_codes.db')
+    nrc_codes = pd.read_sql_query("SELECT * FROM nrc_codes;", conn)
+    
+    # Merge the error codes with the negative response codes
+    df = df.merge(nrc_codes, left_on='error', right_on='Code', how='left')
+    
+    # Error codes with no match in db, fill with 'unknown error'
+    # Also replaces info from 'Description' column in 'error' column
+    df['error'] = np.where((df['reply_sid']=='0x7F') & (df['Description'].isnull()), 'Unknown error', df['Description'])
+    
+    # Fill in missing error descriptions
+    df['error'] = df['error'].fillna('No error')
+    
+    return df.drop(columns=['Code', 'Description'])
