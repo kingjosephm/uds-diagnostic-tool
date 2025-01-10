@@ -80,7 +80,7 @@ def combine_request_reply(df: pd.DataFrame) -> pd.DataFrame:
 
         reply = replies[(replies['source'] == request['target']) &
                         (request['number'] < replies['number'])].head(1)\
-                            [['sid', 'error']]  # presorted on packet number so the first reply is the one we want
+                            [['source', 'sid', 'error']]  # presorted on packet number so the first reply is the one we want
         
         if reply.empty:  # no corresponding reply found
             continue
@@ -88,6 +88,6 @@ def combine_request_reply(df: pd.DataFrame) -> pd.DataFrame:
             # Drop reply from the replies dataframe
             replies = replies.drop(reply.index)
             
-            combined.append([request['sid'], reply['sid'].values[0], reply['error'].values[0]])
+            combined.append([reply['source'].values[0], request['sid'], reply['sid'].values[0], reply['error'].values[0]])
     
-    return pd.DataFrame(combined, columns=['request_sid', 'reply_sid', 'error'])
+    return pd.DataFrame(combined, columns=['ecu_address', 'request_sid', 'reply_sid', 'error'])
