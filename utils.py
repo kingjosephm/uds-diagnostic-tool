@@ -94,20 +94,49 @@ def combine_request_reply(df: pd.DataFrame) -> pd.DataFrame:
     
     reply_request = pd.DataFrame(combined, columns=['ecu_address', 'request_sid', 'reply_sid', 'error'])
     
-    # Merge error codes with the negative response codes (if present)
+    # Merge SID descriptions
+    reply_request = merge_sid_description(reply_request)
+    
+    # Merge NRC descriptions (if present)
     if reply_request['error'].notnull().mean() > 0:
     
-        reply_request = merge_error_codes(reply_request)
+        reply_request = merge_nrc_description(reply_request)
     
     else:
         reply_request['error'] = 'No error'
     
     return reply_request
+
+def merge_sid_description(df: pd.DataFrame) -> pd.DataFrame:
+    """Merges the service ID descriptions from the UDS database table. Rows with no SID codes are filled with 
+    'Unknown Request/Reply'.
+
+    Args:
+        df (pd.DataFrame): DataFrame with service IDs
+
+    Returns:
+        pd.DataFrame: DataFrame with descriptions of the service IDs, in addition to the codes themselves
+    """
+    # Load the service IDs from the SQLite database
+    conn = sqlite3.connect('uds/uds_codes.db')
+    sid_codes = pd.read_sql_query("SELECT * FROM sid;", conn)
+    
+    # Merge the service description with request_sid
+    df = df.merge(sid_codes, left_on='request_sid', right_on='SID', how='left')\
+        .rename(columns={'Description': 'request_description'}).drop(columns='SID')
+    df['request_description'] = df['request_description'].fillna('Unknown Request')
+    
+    # Merge the service description with reply_sid
+    df = df.merge(sid_codes, left_on='reply_sid', right_on='SID', how='left')\
+        .rename(columns={'Description': 'reply_description'}).drop(columns='SID')
+    df['reply_description'] = df['reply_description'].fillna('Unknown Reply')
+
+    return df
     
 
-def merge_error_codes(df: pd.DataFrame) -> pd.DataFrame:
-    """Merges the error codes with the negative response codes from the lookup table. Any missing error codes are filled
-    with 'Unknown error'. Rows with no error codes are filled with 'No error'.
+def merge_nrc_description(df: pd.DataFrame) -> pd.DataFrame:
+    """Merges the negative response description from the lookup table. Any missing NRC codes are filled
+    with 'Unknown error'. Rows with no NRC codes are filled with 'No error'.
 
     Args:
         df (pd.DataFrame): DataFrame with error codes
@@ -116,8 +145,8 @@ def merge_error_codes(df: pd.DataFrame) -> pd.DataFrame:
         pd.DataFrame: DataFrame with descriptions of the error codes rather than the codes themselves
     """
     # Load the negative response codes from the SQLite database
-    conn = sqlite3.connect('lookup/nrc_codes.db')
-    nrc_codes = pd.read_sql_query("SELECT * FROM nrc_codes;", conn)
+    conn = sqlite3.connect('uds/uds_codes.db')
+    nrc_codes = pd.read_sql_query("SELECT * FROM nrc;", conn)
     
     # Merge the error codes with the negative response codes
     df = df.merge(nrc_codes, left_on='error', right_on='Code', how='left')
@@ -146,11 +175,12 @@ def convert_session_log_to_str(df: pd.DataFrame) -> str:
     for _, row in df.iterrows():
 
         ecu = row['ecu_address']
-        request = row['request_sid']
-        reply = row['reply_sid']
+        request_sid = row['request_sid']
+        request_description = row['request_description']
+        reply_sid = row['reply_sid']
+        reply_description = row['reply_description']
         error = row['error']
         
-        session_log += f"ECU '{ecu}': {request} -> {reply} // {error}\n"
+        session_log += f"ECU '{ecu}': SID {request_sid} ({request_description}) -> SID {reply_sid} ({reply_description}) // {error}\n"
     
     return session_log
-
