@@ -130,3 +130,27 @@ def merge_error_codes(df: pd.DataFrame) -> pd.DataFrame:
     df['error'] = df['error'].fillna('No error')
     
     return df.drop(columns=['Code', 'Description'])
+
+
+def convert_session_log_to_str(df: pd.DataFrame) -> str:
+    """ Converts session log from pd.DataFrame to string format.
+
+    Args:
+        df (pd.DataFrame): Dataframe where each row represents a single request-reply pair, ecu address and error code.
+
+    Returns:
+        str: string representation of the session log
+    """
+    session_log = ""
+
+    for _, row in df.iterrows():
+
+        ecu = row['ecu_address']
+        request = row['request_sid']
+        reply = row['reply_sid']
+        error = row['error']
+        
+        session_log += f"ECU '{ecu}': {request} -> {reply} // {error}\n"
+    
+    return session_log
+
