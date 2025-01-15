@@ -3,6 +3,9 @@ import pyshark
 import sqlite3
 import numpy as np
 
+# pylint: disable=C0303
+# pylint: disable=C0301
+# pylint: disable=e1133
 
 async def read_pcap_file(file_path: str) -> pd.DataFrame:
     """Reads a pcap file and returns a Pandas DataFrame with UDS packets.
@@ -122,13 +125,13 @@ def merge_sid_description(df: pd.DataFrame) -> pd.DataFrame:
     sid_codes = pd.read_sql_query("SELECT * FROM sid;", conn)
     
     # Merge the service description with request_sid
-    df = df.merge(sid_codes, left_on='request_sid', right_on='SID', how='left')\
-        .rename(columns={'Description': 'request_description'}).drop(columns='SID')
+    df = df.merge(sid_codes, left_on='request_sid', right_on='Code', how='left')\
+        .rename(columns={'Description': 'request_description'}).drop(columns='Code')
     df['request_description'] = df['request_description'].fillna('Unknown Request')
     
     # Merge the service description with reply_sid
-    df = df.merge(sid_codes, left_on='reply_sid', right_on='SID', how='left')\
-        .rename(columns={'Description': 'reply_description'}).drop(columns='SID')
+    df = df.merge(sid_codes, left_on='reply_sid', right_on='Code', how='left')\
+        .rename(columns={'Description': 'reply_description'}).drop(columns='Code')
     df['reply_description'] = df['reply_description'].fillna('Unknown Reply')
 
     return df
