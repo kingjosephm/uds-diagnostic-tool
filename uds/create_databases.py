@@ -1,8 +1,16 @@
 import sqlite3
 import pandas as pd
 import numpy as np
+from dotenv import load_dotenv
+from langchain_openai import OpenAIEmbeddings
+from langchain_chroma import Chroma
+from langchain_core.documents import Document
+import os
 
-pd.set_option('display.max_rows', 100)
+# Load environment variables from .env file
+load_dotenv()
+
+pd.set_option('display.max_rows', 20)
 pd.set_option('display.max_columns', 100)
 
 # pylint: disable=C0303
@@ -29,11 +37,14 @@ if __name__ == '__main__':
     nrc = nrc.reset_index(drop=True)
     assert nrc['NRC'].duplicated().sum() == 0, "Duplicate NRC codes found!"
     
+    nrc.rename(columns={'NRC': 'Code'}, inplace=True)
+        
     # NRC Long-form descriptions for vector DB (below)
-    nrc_long = 'NRC ' + nrc['NRC'] + ": " + nrc['Description']
-    del nrc['Description']  # Drop long-form descriptions
+    nrc['Type'] = 'NRC'
+    nrc_long = nrc[['Code', 'Type', 'Description']]
+    nrc.drop(columns=['Type', 'Description'], inplace=True)  # drop long-form descriptions
     
-    nrc = nrc.rename(columns={'NRC': 'Code', 'Response': 'Description'})  # Standardizing column names
+    nrc = nrc.rename(columns={'Response': 'Description'})  # Use short-form description for SQLite DB
     
     # Write df to new table in SQLite, or overwrite existing table
     nrc.to_sql(name='nrc', con=conn, if_exists='replace', index=False)
@@ -50,12 +61,13 @@ if __name__ == '__main__':
     sid = sid[~sid['Description'].str.contains('Reserved')].reset_index(drop=True)
     sid = sid[~sid['Description'].str.contains('ISO')].reset_index(drop=True)
     
-    # SID Long-form descriptions for vector DB (below)
-    sid_long = 'SID ' + sid['SID'] + ": " + sid['Description']
-    del sid['Description']  # Drop long-form descriptions
-    
     sid.rename(columns={'SID': 'Code'}, inplace=True)
     assert sid['Code'].duplicated().sum() == 0, "Duplicate SID codes found!"
+    
+    # SID Long-form descriptions for vector DB (below)
+    sid_long = sid[['Code', 'Type', 'Description']].copy()
+    sid_long['Type'] = 'SID'
+    del sid['Description']  # Drop long-form descriptions
 
     # Combined description
     sid['Description'] = np.where((sid['Type']=='Request') & (sid['Code'] != '0x7F'), sid['Service'] + ' Request', np.NaN)
@@ -76,4 +88,26 @@ if __name__ == '__main__':
     # Combine 
     comb = pd.concat([sid_long, nrc_long], axis=0).reset_index(drop=True)
     
+    documents = [
+        Document(
+            page_content=row.Description,
+            metadata={
+                'Code': row.Code,
+                'Type': row.Type
+            }
+        )
+        for row in comb.itertuples(index=False)
+    ]
+        
+    # Initialize the embedding model
+    embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
     
+    # Create Chroma vector store
+    vector_store = Chroma(
+    collection_name="uds_codes",
+    embedding_function=embeddings,
+    persist_directory="./uds/vector_store"  # Directory to save the vector store locally
+    )
+    
+    # Add documents to the vector store
+    vector_store.add_documents(documents=documents)
