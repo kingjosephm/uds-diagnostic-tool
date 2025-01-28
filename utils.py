@@ -2,6 +2,9 @@ import pandas as pd
 import pyshark
 import sqlite3
 import numpy as np
+from dotenv import load_dotenv
+import os
+from langchain_openai import ChatOpenAI
 
 # pylint: disable=C0303
 # pylint: disable=C0301
@@ -187,3 +190,17 @@ def convert_session_log_to_str(df: pd.DataFrame) -> str:
         session_log += f"ECU '{ecu}': SID {request_sid} ({request_description}) -> SID {reply_sid} ({reply_description}) // {error}\n"
     
     return session_log
+
+def instantiate_llm() -> ChatOpenAI:
+    """Instantiates the Langchain OpenAI model.
+
+    Returns:
+        ChatOpenAI: Langchain OpenAI model
+    """
+    # Load environment variables from .env file
+    load_dotenv()
+
+    # Get the OPENAI_API_KEY from environment variables
+    openai_api_key = os.getenv('OPENAI_API_KEY')
+
+    return ChatOpenAI(api_key=openai_api_key, temperature=0, model="gpt-4o")

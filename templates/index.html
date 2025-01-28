@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #f7f7f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .chat-container {
+      width: 600px;
+      max-width: 90%;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      height: 80vh;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .messages {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+    .message {
+      margin-bottom: 1rem;
+    }
+    .assistant {
+      background: #eef;
+      padding: 0.5rem;
+      border-radius: 4px;
+      max-width: 80%;
+    }
+    .user {
+      background: #dfffd6;
+      padding: 0.5rem;
+      border-radius: 4px;
+      max-width: 80%;
+      align-self: flex-end;
+    }
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #ccc;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 1rem;
+      border: none;
+      outline: none;
+    }
+    .chat-input button {
+      padding: 1rem;
+      border: none;
+      background: #007bff;
+      color: #fff;
+      cursor: pointer;
+    }
+    .chat-input button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="messages" id="messages">
+      <!-- Messages will appear here -->
+    </div>
+    <div class="chat-input">
+      <input type="text" id="user-input" placeholder="Type your message here..." />
+      <button id="send-btn">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const messagesDiv = document.getElementById('messages');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+
+    // Function to add messages to the chat
+    function addMessage(content, sender = 'assistant') {
+      const msgDiv = document.createElement('div');
+      msgDiv.classList.add('message');
+      const innerDiv = document.createElement('div');
+      innerDiv.classList.add(sender);
+      innerDiv.textContent = content;
+      msgDiv.appendChild(innerDiv);
+      messagesDiv.appendChild(msgDiv);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    // Function to send message and handle streaming
+    function sendMessage() {
+        const text = userInput.value.trim();
+        if (!text) return;
+      
+        // Display user's message
+        addMessage(text, 'user');
+        userInput.value = '';
+      
+        try {
+          // Use POST instead of GET
+          const eventSource = new EventSource(`/chat?message=${encodeURIComponent(text)}`); // Remove this line
+          fetch('/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: text })
+          })
+            .then(response => response.text())
+            .then(data => {
+              addMessage(data, 'assistant');
+            });
+        } catch (err) {
+          console.error('Error:', err);
+          addMessage('Error: Could not stream response.', 'assistant');
+        }
+      }
+
+    // Event listeners
+    sendBtn.addEventListener('click', sendMessage);
+    userInput.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+
+    // Fetch and display the welcome message on load
+    window.onload = async function () {
+      try {
+        const response = await fetch('/welcome');
+        const data = await response.json();
+        addMessage(data.response, 'assistant');
+      } catch (err) {
+        console.error('Error fetching welcome message:', err);
+        addMessage('Error: Could not load welcome message.', 'assistant');
+      }
+    };
+  </script>
+</body>
+</html>
