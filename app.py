@@ -1,56 +1,32 @@
-import uuid
-from flask import Flask, render_template, request, jsonify, session, Response
-
-# LangGraph and LangChain imports
-from typing import Annotated
-from typing_extensions import TypedDict
-from langchain_core.messages import HumanMessage
-from langgraph.graph import StateGraph, START, END
-from langgraph.graph.message import add_messages
+from flask import Flask, render_template, request, jsonify
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.prebuilt import create_react_agent
+from langchain_community.tools.tavily_search import TavilySearchResults
 
 from utils import instantiate_llm
 
+# Initialize memory saver (could be replaced with SQLite)
+memory = MemorySaver()
 
 # Initialize the LLM model
-llm = instantiate_llm()
+llm = instantiate_llm()  # No streaming for single query functionality
 
-class State(TypedDict):
-    # Messages have the type "list". The `add_messages` function
-    # in the annotation defines how this state key should be updated
-    # (in this case, it appends messages to the list, rather than overwriting them)
-    messages: Annotated[list, add_messages]
-    
-def chatbot(state: State):
-    return {"messages": [llm.invoke(state["messages"])]}
-    
-graph_builder = StateGraph(State)
-graph_builder.add_node("chatbot", chatbot)
-graph_builder.add_edge(START, "chatbot")
-graph_builder.add_edge("chatbot", END)
-graph = graph_builder.compile()
+# Provide agent tools
+tools = [TavilySearchResults(max_results=1)]
 
-def stream_graph_updates(user_input: str):
-    for event in graph.stream({"messages": [{"role": "user", "content": user_input}]}):
-        for value in event.values():
-            print("Assistant:", value["messages"][-1].content)
+# Create the checkpointer for memory saving
+checkpointer = MemorySaver()
 
-# -------------------
-# Helper Function to Get or Create thread_id
-# -------------------
-
-def get_thread_id():
-    """
-    Retrieves the thread_id from the user's session.
-    If it doesn't exist, generates a new UUID and stores it in the session.
-    """
-    if 'thread_id' not in session:
-        session['thread_id'] = str(uuid.uuid4())
-    return session['thread_id']
+# Create the React agent
+agent = create_react_agent(model=llm, 
+                           tools=tools, 
+                           checkpointer=checkpointer, 
+                           prompt=None, debug=True)
 
 
-# -------------------
-# Flask Routes
-# -------------------
+##################################################
+#####       Flask App Configuration         ######
+##################################################
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -67,45 +43,28 @@ def welcome():
     Endpoint to send a welcome message.
     This should be called by the front end when the chat interface loads.
     """
-    return jsonify({"response": "H! How can I help you?"})
+    return jsonify({"response": "Hi! How can I help you?"})
 
 @app.route("/chat", methods=["POST"])
 def chat():
     """
-    Endpoint to handle chat messages.
-    Streams each word as it is being generated using LangGraph's graph.stream().
+    Endpoint for processing a single user message.
+    Accepts a JSON payload with a single user message.
     """
     data = request.get_json()
     user_message = data.get("message", "").strip()
-
-    if not user_message:
-        return jsonify({"response": "Please enter a message."}), 400
-
-    # Retrieve or create a unique thread_id for the session
-    thread_id = get_thread_id()
-
-    def generate():
-        try:
-            inputs = {"messages": [{"role": "user", "content": user_message}]}
-            for event in graph.stream(inputs, stream_mode="messages"):                
-                # Unpack the tuple returned by the event
-                if isinstance(event, tuple) and len(event) == 2:
-                    ai_message_chunk, metadata = event
-                    # Ensure the chunk has non-empty content
-                    if ai_message_chunk.content.strip():
-                        for chunk in ai_message_chunk.content.splitlines(keepends=True):  # Split by lines, preserving newlines
-                            yield chunk  # Yield each line directly
-                    else:
-                        continue
-                else:
-                    print(f"Unexpected event structure: {event}")
-        except Exception as e:
-            print(f"Error during graph stream: {e}")
-            yield "Sorry, something went wrong processing your request."
-
-    return Response(generate(), content_type="text/plain")
-
-
+    
+    try:
+        # Create a state with the user's message
+        inputs = {"messages": [{"role": "user", "content": user_message}]}
+        
+        # Run the graph to generate the response
+        result = agent.invoke(inputs, config={"configurable": {"thread_id": 42}})
+        
+        return jsonify({"response": result["messages"][-1].content})
+    
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # -------------------
 # Main Entry Point

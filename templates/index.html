@@ -30,6 +30,7 @@
     }
     .message {
       margin-bottom: 1rem;
+      white-space: pre-wrap;
     }
     .assistant {
       background: #eef;
@@ -82,7 +83,6 @@
     const userInput = document.getElementById('user-input');
     const sendBtn = document.getElementById('send-btn');
 
-    // Function to add messages to the chat
     function addMessage(content, sender = 'assistant') {
       const msgDiv = document.createElement('div');
       msgDiv.classList.add('message');
@@ -94,52 +94,61 @@
       messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    // Function to send message and handle streaming
-    function sendMessage() {
-        const text = userInput.value.trim();
-        if (!text) return;
-      
-        // Display user's message
-        addMessage(text, 'user');
-        userInput.value = '';
-      
-        try {
-          // Use POST instead of GET
-          const eventSource = new EventSource(`/chat?message=${encodeURIComponent(text)}`); // Remove this line
-          fetch('/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: text })
-          })
-            .then(response => response.text())
-            .then(data => {
-              addMessage(data, 'assistant');
-            });
-        } catch (err) {
-          console.error('Error:', err);
-          addMessage('Error: Could not stream response.', 'assistant');
-        }
-      }
+    async function sendMessage() {
+      const text = userInput.value.trim();
+      if (!text) return;
 
-    // Event listeners
+      // Add the user's message to the chat
+      addMessage(text, 'user');
+      userInput.value = '';
+
+      try {
+        const response = await fetch('/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text })
+        });
+
+        const data = await response.json();
+        if (data.response) {
+          addMessage(data.response, 'assistant');
+        } else if (data.error) {
+          addMessage('Error: ' + data.error, 'assistant');
+        } else {
+          addMessage('Error: Invalid response from server.', 'assistant');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        addMessage('Error: Could not process your request.', 'assistant');
+      }
+    }
+
+    async function fetchWelcomeMessage() {
+      try {
+        const response = await fetch('/welcome', { method: 'GET' });
+        const data = await response.json();
+        if (data.response) {
+          addMessage(data.response, 'assistant');
+        } else {
+          addMessage('Error: Unable to fetch welcome message.', 'assistant');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        addMessage('Error: Unable to fetch welcome message.', 'assistant');
+      }
+    }
+
+    // Fetch welcome message on page load
+    window.onload = fetchWelcomeMessage;
+
     sendBtn.addEventListener('click', sendMessage);
+
+    // Allow the user to press Enter to send
     userInput.addEventListener('keypress', function (e) {
       if (e.key === 'Enter') {
         sendMessage();
       }
     });
-
-    // Fetch and display the welcome message on load
-    window.onload = async function () {
-      try {
-        const response = await fetch('/welcome');
-        const data = await response.json();
-        addMessage(data.response, 'assistant');
-      } catch (err) {
-        console.error('Error fetching welcome message:', err);
-        addMessage('Error: Could not load welcome message.', 'assistant');
-      }
-    };
   </script>
 </body>
 </html>
