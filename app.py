@@ -1,9 +1,30 @@
+import os
+from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, jsonify
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
 from langchain_community.tools.tavily_search import TavilySearchResults
 
 from utils import instantiate_llm
+
+# -------------------
+# Configuration
+# -------------------
+
+UPLOAD_FOLDER = "uploads"  # Folder to store PCAP files
+ALLOWED_EXTENSIONS = {"pcap"}
+
+# Initialize Flask app
+app = Flask(__name__)
+app.config["UPLOAD_FOLDER"] = "uploads"
+app.secret_key = "some-secure-and-random-secret-key"  # Replace with a secure key in production
+
+# Ensure the upload folder exists
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+# -------------------
+# LangGraph Agent Setup
+# -------------------
 
 # Initialize memory saver (could be replaced with SQLite)
 memory = MemorySaver()
@@ -23,14 +44,9 @@ agent = create_react_agent(model=llm,
                            checkpointer=checkpointer, 
                            prompt=None, debug=True)
 
-
-##################################################
-#####       Flask App Configuration         ######
-##################################################
-
-# Initialize Flask app
-app = Flask(__name__)
-app.secret_key = "some-secure-and-random-secret-key"  # Replace with a secure key in production
+# -------------------
+# Flask Routes
+# -------------------
 
 @app.route("/", methods=["GET"])
 def index():
@@ -65,6 +81,35 @@ def chat():
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+def allowed_file(filename):
+    """Check if the uploaded file has a .pcap extension."""
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route("/upload", methods=["POST"])
+def upload_file():
+    """
+    Endpoint for uploading PCAP files.
+    Only allows .pcap files and stores them in the 'uploads' directory.
+    """
+    if "file" not in request.files:
+        return jsonify({"error": "No file part"}), 400
+
+    file = request.files["file"]
+
+    if file.filename == "":
+        return jsonify({"error": "No selected file"}), 400
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+        file.save(filepath)
+
+        # TODO: Process PCAP file (e.g., parsing, analyzing network traffic)
+        
+        return jsonify({"message": f"File {filename} uploaded successfully", "filepath": filepath})
+
+    return jsonify({"error": "Invalid file type. Only .pcap files are allowed."}), 400
 
 # -------------------
 # Main Entry Point
