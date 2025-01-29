@@ -107,7 +107,6 @@ dependencies:
   - langchain-core=0.3.25
   - langchain-experimental=0.3.4
   - langchain-text-splitters=0.3.0
-  - langgraph=0.2.66
   - langgraph-checkpoint=2.0.10
   - langgraph-sdk=0.1.51
   - langsmith=0.1.129
@@ -289,6 +288,7 @@ dependencies:
       - distro==1.9.0
       - jiter==0.6.1
       - langchain-openai==0.2.2
+      - langgraph==0.2.68
       - openai==1.51.2
       - regex==2024.9.11
       - tiktoken==0.8.0
