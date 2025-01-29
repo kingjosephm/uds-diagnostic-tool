@@ -191,8 +191,12 @@ def convert_session_log_to_str(df: pd.DataFrame) -> str:
     
     return session_log
 
-def instantiate_llm() -> ChatOpenAI:
+def instantiate_llm(streaming: bool = False, model: str = "gpt-4o") -> ChatOpenAI:
     """Instantiates the Langchain OpenAI model.
+    
+    Args: 
+        streaming (bool): Whether to use streaming or not. Defaults to False.
+        model (str): The model to use. Defaults to "gpt-4o".
 
     Returns:
         ChatOpenAI: Langchain OpenAI model
@@ -203,4 +207,7 @@ def instantiate_llm() -> ChatOpenAI:
     # Get the OPENAI_API_KEY from environment variables
     openai_api_key = os.getenv('OPENAI_API_KEY')
 
-    return ChatOpenAI(api_key=openai_api_key, temperature=0, model="gpt-4o")
+    return ChatOpenAI(api_key=openai_api_key, 
+                      temperature=0, 
+                      streaming=streaming, 
+                      model=model)
