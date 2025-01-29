@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chatbot with File Upload</title>
   <style>
     body {
@@ -8,10 +10,10 @@
       margin: 0; padding: 0;
       background: #f7f7f7;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      flex-direction: column;
     }
     .chat-container {
       width: 600px;
@@ -21,7 +23,7 @@
       border-radius: 8px;
       display: flex;
       flex-direction: column;
-      height: 70vh;
+      height: 60vh;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     .messages {
@@ -89,6 +91,11 @@
     .hidden-input {
       display: none;
     }
+    #upload-status {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #333;
+    }
   </style>
 </head>
 <body>
@@ -108,12 +115,16 @@
   <div class="upload-container" id="upload-area">
     <p>Drag & drop a PCAP file here or click to upload</p>
     <input type="file" id="file-input" class="hidden-input" accept=".pcap" />
+    <p id="upload-status"></p>
   </div>
 
   <script>
     const messagesDiv = document.getElementById('messages');
     const userInput = document.getElementById('user-input');
     const sendBtn = document.getElementById('send-btn');
+    const uploadArea = document.getElementById('upload-area');
+    const fileInput = document.getElementById('file-input');
+    const uploadStatus = document.getElementById('upload-status');
 
     function addMessage(content, sender = 'assistant') {
       const msgDiv = document.createElement('div');
@@ -130,7 +141,6 @@
       const text = userInput.value.trim();
       if (!text) return;
 
-      // Add the user's message to the chat
       addMessage(text, 'user');
       userInput.value = '';
 
@@ -155,27 +165,26 @@
       }
     }
 
-    async function fetchWelcomeMessage() {
+    async function fetchChatHistory() {
       try {
-        const response = await fetch('/welcome', { method: 'GET' });
+        const response = await fetch('/history');
         const data = await response.json();
-        if (data.response) {
-          addMessage(data.response, 'assistant');
-        } else {
-          addMessage('Error: Unable to fetch welcome message.', 'assistant');
+        if (data.history && Array.isArray(data.history)) {
+          data.history.forEach(msg => addMessage(msg.content, msg.role));
         }
       } catch (error) {
-        console.error('Error:', error);
-        addMessage('Error: Unable to fetch welcome message.', 'assistant');
+        console.error('Error fetching chat history:', error);
       }
     }
 
-    // Fetch welcome message on page load
-    window.onload = fetchWelcomeMessage;
+
+    // Fetch chat history & welcome message when page loads
+    window.onload = async () => {
+        await fetchChatHistory();
+        await fetchWelcomeMessage();
+    };
 
     sendBtn.addEventListener('click', sendMessage);
-
-    // Allow the user to press Enter to send
     userInput.addEventListener('keypress', function (e) {
       if (e.key === 'Enter') {
         sendMessage();
@@ -183,57 +192,58 @@
     });
 
     // Drag and Drop File Upload Functionality
-    const uploadArea = document.getElementById('upload-area');
-    const fileInput = document.getElementById('file-input');
-
     uploadArea.addEventListener('click', () => fileInput.click());
 
     fileInput.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        if (file) uploadFile(file);
+      const file = event.target.files[0];
+      if (file) uploadFile(file);
     });
 
     uploadArea.addEventListener('dragover', (event) => {
-        event.preventDefault();
-        uploadArea.classList.add('dragover');
+      event.preventDefault();
+      uploadArea.classList.add('dragover');
     });
 
     uploadArea.addEventListener('dragleave', () => {
-        uploadArea.classList.remove('dragover');
+      uploadArea.classList.remove('dragover');
     });
 
     uploadArea.addEventListener('drop', (event) => {
-        event.preventDefault();
-        uploadArea.classList.remove('dragover');
-        const file = event.dataTransfer.files[0];
-        if (file) uploadFile(file);
+      event.preventDefault();
+      uploadArea.classList.remove('dragover');
+      const file = event.dataTransfer.files[0];
+      if (file) uploadFile(file);
     });
 
     async function uploadFile(file) {
-        if (!file.name.endsWith('.pcap')) {
-            alert('Invalid file type. Please upload a .pcap file.');
-            return;
+      if (!file.name.endsWith('.pcap')) {
+        uploadStatus.textContent = 'Invalid file type. Please upload a .pcap file.';
+        uploadStatus.style.color = 'red';
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await fetch('/upload', {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await response.json();
+        if (data.message) {
+          uploadStatus.textContent = `✅ ${data.message}`;
+          uploadStatus.style.color = 'green';
+        } else {
+          uploadStatus.textContent = `❌ Error: ${data.error || 'Unknown error'}`;
+          uploadStatus.style.color = 'red';
         }
-
-        const formData = new FormData();
-        formData.append('file', file);
-
-        try {
-            const response = await fetch('/upload', {
-                method: 'POST',
-                body: formData
-            });
-
-            const data = await response.json();
-            if (data.message) {
-                alert(data.message);
-            } else {
-                alert('Error: ' + (data.error || 'Unknown error occurred.'));
-            }
-        } catch (error) {
-            console.error('Upload error:', error);
-            alert('Error uploading file.');
-        }
+      } catch (error) {
+        console.error('Upload error:', error);
+        uploadStatus.textContent = '❌ Error uploading file.';
+        uploadStatus.style.color = 'red';
+      }
     }
   </script>
 </body>
