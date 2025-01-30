@@ -5,17 +5,15 @@ from typing_extensions import TypedDict
 import nest_asyncio
 from flask import Flask, render_template, request, jsonify, session
 from werkzeug.utils import secure_filename
-
-from langchain_core.messages import HumanMessage
-from langgraph.checkpoint.memory import MemorySaver
-from langgraph.prebuilt import create_react_agent
-from langchain_community.tools.tavily_search import TavilySearchResults
-from langgraph.graph import StateGraph, MessagesState, START, END
 from langgraph.types import Command
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.graph import StateGraph, MessagesState, START, END
 
+from utils import instantiate_llm, pcap_transformation_wrapper
+from agents.state import State
+from agents.internet_search import internet_search_node
 
 nest_asyncio.apply()  # Needed for running the async function with Flask
-from utils import instantiate_llm, pcap_transformation_wrapper
 
 # -------------------
 # Configuration
@@ -46,73 +44,43 @@ chat_histories = {}  # This dictionary will store chat history per session
 WELCOME_MESSAGE = {"role": "assistant", "content": "Hi! How can I help you? Options include uploading a PCAP file, or asking a question about e.g. UDS Codes."}
 
 # -------------------
-# LangGraph Agent Setup
+# LangGraph Supervisor Agent Setup
 # -------------------
-
-# Initialize memory saver (could be replaced with SQLite)
-memory = MemorySaver()
 
 # Initialize the LLM model
 llm = instantiate_llm()  # No streaming for single query functionality
 
-
-
-nodes = ["search_node"]
+nodes = ["internet_search"]
 options = nodes + ["FINISH"]
 
 class Router(TypedDict):
     """Worker to route to next. If no workers needed, route to FINISH."""
     next: Literal[*options]
-    
-class State(MessagesState):
-    next: str
 
 def supervisor_node(state: MessagesState) -> Command[Literal[*nodes, "__end__"]]:
-    
     system_prompt = (
-    "You are a supervisor tasked with managing a conversation between the"
-    f" following workers: {nodes}. Given the following user request,"
-    " respond with the worker to act next. Each worker will perform a"
-    " task and respond with their results and status. When finished,"
-    " respond with FINISH."
+        "You are a supervisor tasked with managing a conversation between the"
+        f" following workers: {nodes}. Given the following user request,"
+        " respond with the worker to act next. Each worker will perform a"
+        " task and respond with their results and status. When finished,"
+        " respond with FINISH."
     )
-    
-    
-    messages = [
-        {"role": "system", "content": system_prompt},
-    ] + state["messages"]
+    messages = [{"role": "system", "content": system_prompt}] + state["messages"]
     response = llm.with_structured_output(Router).invoke(messages)
     goto = response["next"]
     if goto == "FINISH":
         goto = END
-
     return Command(goto=goto)
 
+# Initialize memory saver (could be replaced with SQLite)
+memory = MemorySaver()
 
-search_agent = create_react_agent(
-    llm, tools=[TavilySearchResults(max_results=1)], prompt="You are a researcher that searches the internet and returns results. Do not do any analysis of data."
-)
-
-def search_node(state: State) -> Command[Literal["supervisor"]]:
-    result = search_agent.invoke(state)
-    return Command(
-        update={
-            "messages": [
-                HumanMessage(content=result["messages"][-1].content, name="search_node")
-            ]
-        },
-        goto="supervisor",
-    )
-
-
-# Create the checkpointer for memory saving
-checkpointer = MemorySaver()
-
+# Create the state graph
 builder = StateGraph(State)
 builder.add_edge(START, "supervisor")
 builder.add_node("supervisor", supervisor_node)
-builder.add_node("search_node", search_node)
-graph = builder.compile(checkpointer)
+builder.add_node("internet_search", internet_search_node)
+graph = builder.compile(checkpointer=memory, debug=True)
 
 
 # -------------------
@@ -129,6 +97,7 @@ def initialize_chat():
     
     if session_id not in chat_histories:
         chat_histories[session_id] = [WELCOME_MESSAGE]  # Start session with welcome message
+        session.pop("uploaded_file_info", None)  # Clear uploaded file context for a new session
 
 @app.route("/", methods=["GET"])
 def index():
@@ -198,10 +167,8 @@ def upload_file():
         file.save(filepath)
         
         df  = pcap_transformation_wrapper(filepath)
-        # Convert DataFrame to an HTML table
         df_html = df.head().to_html(classes="dataframe", index=False)
 
-        # Add DataFrame HTML to chat history
         chat_histories[session_id].append({
             "role": "assistant",
             "content": f"Here's a preview of the uploaded PCAP file:<br>{df_html}"
@@ -211,11 +178,9 @@ def upload_file():
             "content": "Let me know if you'd like to proceed with further analysis."
         })
         
-        # Save DataFrame as CSV
         csv_path = os.path.join(app.config["UPLOAD_FOLDER"], f"{filename.split('.')[0]}.csv")
         df.to_csv(csv_path, index=False)
 
-        # Store file info in session for context
         session["uploaded_file_info"] = filename
 
         return jsonify({"message": f"File {filename} uploaded successfully", "filepath": filepath})
