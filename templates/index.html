@@ -53,11 +53,14 @@
       align-self: flex-start;
     }
     .user {
-      background: #007bff;
+      background: #888;
       padding: 0.5rem;
       border-radius: 4px;
-      max-width: 100%;
-      align-self: flex-end;
+      max-width: 50%; /* Limit user message width to half of the chat window */
+      align-self: flex-end; /* Align to the right */
+      text-align: left; /* Right-align text */
+      width: fit-content; /* Dynamically adjust width */
+      margin-left: auto; /* Push to the right while limiting max-width */
     }
     .chat-input {
       display: flex;
