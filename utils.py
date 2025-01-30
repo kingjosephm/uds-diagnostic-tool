@@ -2,6 +2,10 @@ import pandas as pd
 import pyshark
 import sqlite3
 import numpy as np
+from dotenv import load_dotenv
+import os
+import asyncio
+from langchain_openai import ChatOpenAI
 
 # pylint: disable=C0303
 # pylint: disable=C0301
@@ -187,3 +191,38 @@ def convert_session_log_to_str(df: pd.DataFrame) -> str:
         session_log += f"ECU '{ecu}': SID {request_sid} ({request_description}) -> SID {reply_sid} ({reply_description}) // {error}\n"
     
     return session_log
+
+def pcap_transformation_wrapper(file_path: str) -> pd.DataFrame:
+    """Wrapper function to transform a pcap file into a Pandas DataFrame
+
+    Args:
+        file_path (str): string path to the pcap file
+
+    Returns:
+        df: DataFrame representation of the pcap session log
+    """
+    df = asyncio.run(read_pcap_file(file_path))
+    df = combine_request_reply(df)
+
+    return df
+
+def instantiate_llm(streaming: bool = False, model: str = "gpt-4o") -> ChatOpenAI:
+    """Instantiates the Langchain OpenAI model.
+    
+    Args: 
+        streaming (bool): Whether to use streaming or not. Defaults to False.
+        model (str): The model to use. Defaults to "gpt-4o".
+
+    Returns:
+        ChatOpenAI: Langchain OpenAI model
+    """
+    # Load environment variables from .env file
+    load_dotenv()
+
+    # Get the OPENAI_API_KEY from environment variables
+    openai_api_key = os.getenv('OPENAI_API_KEY')
+
+    return ChatOpenAI(api_key=openai_api_key, 
+                      temperature=0, 
+                      streaming=streaming, 
+                      model=model)

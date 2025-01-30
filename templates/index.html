@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luxoft UDS Diagnostic Diagnosis Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #000;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .chat-container {
+      width: 90%;
+      max-width: 1200px;
+      background: #222;
+      border: 1px solid #555;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      height: 70vh;
+      box-shadow: 0 0 10px rgba(255,255,255,0.2);
+    }
+    .messages {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .message {
+      margin-bottom: 1rem;
+      white-space: pre-wrap;
+    }
+    .assistant {
+      background: #444;
+      padding: 0.5rem;
+      border-radius: 4px;
+      max-width: 100%;
+      align-self: flex-start;
+    }
+    .user {
+      background: #888;
+      padding: 0.5rem;
+      border-radius: 4px;
+      max-width: 50%; /* Limit user message width to half of the chat window */
+      align-self: flex-end; /* Align to the right */
+      text-align: left; /* Right-align text */
+      width: fit-content; /* Dynamically adjust width */
+      margin-left: auto; /* Push to the right while limiting max-width */
+    }
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #555;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 1rem;
+      border: none;
+      outline: none;
+      background: #333;
+      color: #fff;
+    }
+    .chat-input button {
+      padding: 1rem;
+      border: none;
+      background: #007bff;
+      color: #fff;
+      cursor: pointer;
+    }
+    .chat-input button:hover {
+      background: #0056b3;
+    }
+    .upload-container {
+      width: 90%;
+      max-width: 1200px;
+      background: #222;
+      border: 2px dashed #007bff;
+      border-radius: 8px;
+      text-align: center;
+      padding: 20px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+    .upload-container p {
+      margin: 10px 0;
+      color: #bbb;
+    }
+    .upload-container.dragover {
+      background: #333;
+    }
+    .hidden-input {
+      display: none;
+    }
+    #upload-status {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #fff;
+    }
+    table.dataframe {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    table.dataframe th, table.dataframe td {
+      border: 1px solid #555;
+      padding: 8px;
+      text-align: left; /* Left-align column data */
+    }
+    table.dataframe th {
+      background-color: #333;
+      color: #fff;
+    }
+    table.dataframe td {
+      background-color: #444;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="title">Luxoft UDS Diagnostic Diagnosis Tool</div>
+  
+  <div class="chat-container">
+    <div class="messages" id="messages">
+    </div>
+    <div class="chat-input">
+      <input type="text" id="user-input" placeholder="Type your message here..." />
+      <button id="send-btn">Send</button>
+    </div>
+  </div>
+
+  <div class="upload-container" id="upload-area">
+    <p>Drag & drop a PCAP file here or click to upload</p>
+    <input type="file" id="file-input" class="hidden-input" accept=".pcap" />
+    <p id="upload-status"></p>
+  </div>
+
+  <script>
+    const messagesDiv = document.getElementById('messages');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+    const uploadArea = document.getElementById('upload-area');
+    const fileInput = document.getElementById('file-input');
+    const uploadStatus = document.getElementById('upload-status');
+
+    function addMessage(content, sender = 'assistant') {
+      const msgDiv = document.createElement('div');
+      msgDiv.classList.add('message');
+      const innerDiv = document.createElement('div');
+      innerDiv.classList.add(sender);
+
+      // Check if content contains HTML tags (e.g., <table>)
+      if (content.includes('<') && content.includes('>')) {
+        innerDiv.innerHTML = content; // Render as HTML
+      } else {
+        innerDiv.textContent = content; // Render as plain text
+      }
+
+      msgDiv.appendChild(innerDiv);
+      messagesDiv.appendChild(msgDiv);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    async function fetchChatHistory() {
+      try {
+        const response = await fetch('/history');
+        const data = await response.json();
+        if (data.history && Array.isArray(data.history)) {
+          messagesDiv.innerHTML = ''; // Clear messages before adding history
+          data.history.forEach(msg => addMessage(msg.content, msg.role));
+        }
+      } catch (error) {
+        console.error('Error fetching chat history:', error);
+      }
+    }
+
+    window.onload = async () => {
+      await fetchChatHistory();
+    };
+
+    async function sendMessage() {
+      const text = userInput.value.trim();
+      if (!text) return;
+
+      addMessage(text, 'user');
+      userInput.value = '';
+
+      try {
+        const response = await fetch('/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text })
+        });
+        const data = await response.json();
+        if (data.response) {
+          addMessage(data.response, 'assistant');
+        } else if (data.error) {
+          addMessage('Error: ' + data.error, 'assistant');
+        } else {
+          addMessage('Error: Invalid response from server.', 'assistant');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        addMessage('Error: Could not process your request.', 'assistant');
+      }
+    }
+
+    async function uploadFile(file) {
+      if (!file.name.endsWith('.pcap')) {
+        uploadStatus.textContent = 'Invalid file type. Please upload a .pcap file.';
+        uploadStatus.style.color = 'red';
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await fetch('/upload', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await response.json();
+        if (data.message) {
+          uploadStatus.textContent = `✅ ${data.message}`;
+          uploadStatus.style.color = 'green';
+          await fetchChatHistory();  // Refresh chat history to include DataFrame preview
+        }
+      } catch (error) {
+        console.error('Upload error:', error);
+        uploadStatus.textContent = '❌ Error uploading file.';
+        uploadStatus.style.color = 'red';
+      }
+    }
+
+    uploadArea.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (file) uploadFile(file);
+    });
+
+    uploadArea.addEventListener('dragover', (event) => {
+      event.preventDefault();
+      uploadArea.classList.add('dragover');
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+      uploadArea.classList.remove('dragover');
+    });
+
+    uploadArea.addEventListener('drop', (event) => {
+      event.preventDefault();
+      uploadArea.classList.remove('dragover');
+      const file = event.dataTransfer.files[0];
+      if (file) uploadFile(file);
+    });
+
+    sendBtn.addEventListener('click', sendMessage);
+    userInput.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
