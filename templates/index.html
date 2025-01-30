@@ -30,6 +30,8 @@
       flex: 1;
       padding: 1rem;
       overflow-y: auto;
+      display: flex;
+      flex-direction: column;
     }
     .message {
       margin-bottom: 1rem;
@@ -40,6 +42,7 @@
       padding: 0.5rem;
       border-radius: 4px;
       max-width: 80%;
+      align-self: flex-start;
     }
     .user {
       background: #dfffd6;
@@ -68,8 +71,6 @@
     .chat-input button:hover {
       background: #0056b3;
     }
-
-    /* Drag and Drop Upload Styling */
     .upload-container {
       width: 600px;
       max-width: 90%;
@@ -100,10 +101,8 @@
 </head>
 <body>
 
-  <!-- Chatbot UI -->
   <div class="chat-container">
     <div class="messages" id="messages">
-      <!-- Messages will appear here -->
     </div>
     <div class="chat-input">
       <input type="text" id="user-input" placeholder="Type your message here..." />
@@ -111,7 +110,6 @@
     </div>
   </div>
 
-  <!-- File Upload UI -->
   <div class="upload-container" id="upload-area">
     <p>Drag & drop a PCAP file here or click to upload</p>
     <input type="file" id="file-input" class="hidden-input" accept=".pcap" />
@@ -137,39 +135,12 @@
       messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    async function sendMessage() {
-      const text = userInput.value.trim();
-      if (!text) return;
-
-      addMessage(text, 'user');
-      userInput.value = '';
-
-      try {
-        const response = await fetch('/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text })
-        });
-
-        const data = await response.json();
-        if (data.response) {
-          addMessage(data.response, 'assistant');
-        } else if (data.error) {
-          addMessage('Error: ' + data.error, 'assistant');
-        } else {
-          addMessage('Error: Invalid response from server.', 'assistant');
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        addMessage('Error: Could not process your request.', 'assistant');
-      }
-    }
-
     async function fetchChatHistory() {
       try {
         const response = await fetch('/history');
         const data = await response.json();
         if (data.history && Array.isArray(data.history)) {
+          messagesDiv.innerHTML = ''; // Clear messages before adding history
           data.history.forEach(msg => addMessage(msg.content, msg.role));
         }
       } catch (error) {
@@ -177,23 +148,39 @@
       }
     }
 
-
-    // Fetch chat history & welcome message when page loads
     window.onload = async () => {
-        await fetchChatHistory();
-        await fetchWelcomeMessage();
+      await fetchChatHistory();
     };
 
-    sendBtn.addEventListener('click', sendMessage);
-    userInput.addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') {
-        sendMessage();
+    async function uploadFile(file) {
+      if (!file.name.endsWith('.pcap')) {
+        uploadStatus.textContent = 'Invalid file type. Please upload a .pcap file.';
+        uploadStatus.style.color = 'red';
+        return;
       }
-    });
 
-    // Drag and Drop File Upload Functionality
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await fetch('/upload', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await response.json();
+        if (data.message) {
+          uploadStatus.textContent = `✅ ${data.message}`;
+          uploadStatus.style.color = 'green';
+          await fetchChatHistory();  // Refresh chat history to include DataFrame preview
+        }
+      } catch (error) {
+        console.error('Upload error:', error);
+        uploadStatus.textContent = '❌ Error uploading file.';
+        uploadStatus.style.color = 'red';
+      }
+    }
+
     uploadArea.addEventListener('click', () => fileInput.click());
-
     fileInput.addEventListener('change', (event) => {
       const file = event.target.files[0];
       if (file) uploadFile(file);
@@ -214,37 +201,6 @@
       const file = event.dataTransfer.files[0];
       if (file) uploadFile(file);
     });
-
-    async function uploadFile(file) {
-      if (!file.name.endsWith('.pcap')) {
-        uploadStatus.textContent = 'Invalid file type. Please upload a .pcap file.';
-        uploadStatus.style.color = 'red';
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append('file', file);
-
-      try {
-        const response = await fetch('/upload', {
-          method: 'POST',
-          body: formData
-        });
-
-        const data = await response.json();
-        if (data.message) {
-          uploadStatus.textContent = `✅ ${data.message}`;
-          uploadStatus.style.color = 'green';
-        } else {
-          uploadStatus.textContent = `❌ Error: ${data.error || 'Unknown error'}`;
-          uploadStatus.style.color = 'red';
-        }
-      } catch (error) {
-        console.error('Upload error:', error);
-        uploadStatus.textContent = '❌ Error uploading file.';
-        uploadStatus.style.color = 'red';
-      }
-    }
   </script>
 </body>
 </html>

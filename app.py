@@ -1,11 +1,12 @@
 import os
+import nest_asyncio
 from flask import Flask, render_template, request, jsonify, session
 from werkzeug.utils import secure_filename
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
 from langchain_community.tools.tavily_search import TavilySearchResults
-
-from utils import instantiate_llm
+nest_asyncio.apply()  # Needed for running the async function with Flask
+from utils import instantiate_llm, pcap_transformation_wrapper
 
 # -------------------
 # Configuration
@@ -33,7 +34,7 @@ for file in os.listdir(UPLOAD_FOLDER):
 # -------------------
 chat_histories = {}  # This dictionary will store chat history per session
 
-WELCOME_MESSAGE = {"role": "assistant", "content": "Hi! How can I help you?"}
+WELCOME_MESSAGE = {"role": "assistant", "content": "Hi! How can I help you? Options include uploading a PCAP file, or asking a question about e.g. UDS Codes."}
 
 # -------------------
 # LangGraph Agent Setup
@@ -115,11 +116,11 @@ def allowed_file(filename):
 @app.route("/upload", methods=["POST"])
 def upload_file():
     """Endpoint for uploading PCAP files."""
+    session_id = session.get("session_id")
     if "file" not in request.files:
         return jsonify({"error": "No file part"}), 400
 
     file = request.files["file"]
-
     if file.filename == "":
         return jsonify({"error": "No selected file"}), 400
 
@@ -127,6 +128,15 @@ def upload_file():
         filename = secure_filename(file.filename)
         filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
         file.save(filepath)
+        
+        df  = pcap_transformation_wrapper(filepath)
+        head = df.head().to_string()
+
+        # Add DataFrame info to chat history
+        chat_histories[session_id].append({"role": "assistant", "content": f"Here's a preview of the uploaded PCAP file:\n{head}"})
+        
+        # Save DataFrame as CSV
+        df.to_csv(os.path.join(app.config["UPLOAD_FOLDER"], f"{filename.split(".")[0]}.csv"), index=False)
 
         return jsonify({"message": f"File {filename} uploaded successfully", "filepath": filepath})
 
