@@ -1,10 +1,19 @@
 import os
+from typing import Literal
+from typing_extensions import TypedDict
+
 import nest_asyncio
 from flask import Flask, render_template, request, jsonify, session
 from werkzeug.utils import secure_filename
+
+from langchain_core.messages import HumanMessage
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
 from langchain_community.tools.tavily_search import TavilySearchResults
+from langgraph.graph import StateGraph, MessagesState, START, END
+from langgraph.types import Command
+
+
 nest_asyncio.apply()  # Needed for running the async function with Flask
 from utils import instantiate_llm, pcap_transformation_wrapper
 
@@ -46,14 +55,65 @@ memory = MemorySaver()
 # Initialize the LLM model
 llm = instantiate_llm()  # No streaming for single query functionality
 
-# Provide agent tools
-tools = [TavilySearchResults(max_results=1)]
+
+
+nodes = ["search_node"]
+options = nodes + ["FINISH"]
+
+class Router(TypedDict):
+    """Worker to route to next. If no workers needed, route to FINISH."""
+    next: Literal[*options]
+    
+class State(MessagesState):
+    next: str
+
+def supervisor_node(state: MessagesState) -> Command[Literal[*nodes, "__end__"]]:
+    
+    system_prompt = (
+    "You are a supervisor tasked with managing a conversation between the"
+    f" following workers: {nodes}. Given the following user request,"
+    " respond with the worker to act next. Each worker will perform a"
+    " task and respond with their results and status. When finished,"
+    " respond with FINISH."
+    )
+    
+    
+    messages = [
+        {"role": "system", "content": system_prompt},
+    ] + state["messages"]
+    response = llm.with_structured_output(Router).invoke(messages)
+    goto = response["next"]
+    if goto == "FINISH":
+        goto = END
+
+    return Command(goto=goto)
+
+
+search_agent = create_react_agent(
+    llm, tools=[TavilySearchResults(max_results=1)], prompt="You are a researcher that searches the internet and returns results. Do not do any analysis of data."
+)
+
+def search_node(state: State) -> Command[Literal["supervisor"]]:
+    result = search_agent.invoke(state)
+    return Command(
+        update={
+            "messages": [
+                HumanMessage(content=result["messages"][-1].content, name="search_node")
+            ]
+        },
+        goto="supervisor",
+    )
+
 
 # Create the checkpointer for memory saving
 checkpointer = MemorySaver()
 
-# Create the React agent
-agent = create_react_agent(model=llm, tools=tools, checkpointer=checkpointer, prompt=None, debug=True)
+builder = StateGraph(State)
+builder.add_edge(START, "supervisor")
+builder.add_node("supervisor", supervisor_node)
+builder.add_node("search_node", search_node)
+graph = builder.compile(checkpointer)
+
 
 # -------------------
 # Flask Routes
@@ -97,7 +157,7 @@ def chat():
         full_message = uploaded_file_context + user_message
         
         inputs = {"messages": [{"role": "user", "content": full_message}]}
-        result = agent.invoke(inputs, config={"configurable": {"thread_id": 42}})
+        result = graph.invoke(inputs, config={"configurable": {"thread_id": 42}})
         assistant_response = result["messages"][-1].content
 
         # Store messages in memory for the session
