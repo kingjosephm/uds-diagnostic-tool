@@ -26,7 +26,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # Delete existing PCAP files on startup
 for file in os.listdir(UPLOAD_FOLDER):
     file_path = os.path.join(UPLOAD_FOLDER, file)
-    if os.path.isfile(file_path) and file.endswith(".pcap"):
+    if os.path.isfile(file_path) and file.endswith((".pcap", ".csv")):
         os.remove(file_path)
 
 # -------------------
@@ -89,7 +89,14 @@ def chat():
     user_message = data.get("message", "").strip()
 
     try:
-        inputs = {"messages": [{"role": "user", "content": user_message}]}
+        # Use uploaded file context if applicable
+        uploaded_file_context = ""
+        if "uploaded_file_info" in session:
+            uploaded_file_context = f"Analyzing the file {session['uploaded_file_info']}. "
+        
+        full_message = uploaded_file_context + user_message
+        
+        inputs = {"messages": [{"role": "user", "content": full_message}]}
         result = agent.invoke(inputs, config={"configurable": {"thread_id": 42}})
         assistant_response = result["messages"][-1].content
 
@@ -107,6 +114,7 @@ def reset_chat():
     """Clears chat history for the current session and re-adds the welcome message."""
     session_id = session.get("session_id")
     chat_histories[session_id] = [WELCOME_MESSAGE]
+    session.pop("uploaded_file_info", None)  # Clear uploaded file context
     return jsonify({"message": "Chat history cleared."})
 
 def allowed_file(filename):
@@ -130,13 +138,25 @@ def upload_file():
         file.save(filepath)
         
         df  = pcap_transformation_wrapper(filepath)
-        head = df.head().to_string()
+        # Convert DataFrame to an HTML table
+        df_html = df.head().to_html(classes="dataframe", index=False)
 
-        # Add DataFrame info to chat history
-        chat_histories[session_id].append({"role": "assistant", "content": f"Here's a preview of the uploaded PCAP file:\n{head}"})
+        # Add DataFrame HTML to chat history
+        chat_histories[session_id].append({
+            "role": "assistant",
+            "content": f"Here's a preview of the uploaded PCAP file:<br>{df_html}"
+        })
+        chat_histories[session_id].append({
+            "role": "assistant",
+            "content": "Let me know if you'd like to proceed with further analysis."
+        })
         
         # Save DataFrame as CSV
-        df.to_csv(os.path.join(app.config["UPLOAD_FOLDER"], f"{filename.split(".")[0]}.csv"), index=False)
+        csv_path = os.path.join(app.config["UPLOAD_FOLDER"], f"{filename.split('.')[0]}.csv")
+        df.to_csv(csv_path, index=False)
+
+        # Store file info in session for context
+        session["uploaded_file_info"] = filename
 
         return jsonify({"message": f"File {filename} uploaded successfully", "filepath": filepath})
 
