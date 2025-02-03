@@ -12,6 +12,7 @@ from langgraph.graph import StateGraph, MessagesState, START, END
 from utils import instantiate_llm, pcap_transformation_wrapper
 from agents.state import State
 from agents.internet_search import internet_search_node
+from agents.pcap_analyzer import pcap_analyzer_node
 
 nest_asyncio.apply()  # Needed for running the async function with Flask
 
@@ -50,7 +51,7 @@ WELCOME_MESSAGE = {"role": "assistant", "content": "Hi! How can I help you? Opti
 # Initialize the LLM model
 llm = instantiate_llm()  # No streaming for single query functionality
 
-nodes = ["internet_search"]
+nodes = ["internet_search", "pcap_analyzer"]
 options = nodes + ["FINISH"]
 
 class Router(TypedDict):
@@ -80,6 +81,7 @@ builder = StateGraph(State)
 builder.add_edge(START, "supervisor")
 builder.add_node("supervisor", supervisor_node)
 builder.add_node("internet_search", internet_search_node)
+builder.add_node("pcap_analyzer", pcap_analyzer_node)
 graph = builder.compile(checkpointer=memory, debug=True)
 
 
