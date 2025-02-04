@@ -64,13 +64,16 @@ def analysis_prompt(pcap_content: str = "<CSV content not loaded>") -> str:
     summary diagnosis of the UDS protocol messages.
     """
     return f"""You are a diagnostic analyst specializing in Unified Diagnostic Services (UDS) logs.
-        If the CSV content is not already provided, call the tool `select_and_read_csv` to load it from the uploads directory.
+        If the CSV content is not already provided, call the tool `select_and_read_csv` to load a CSV file.
+        
         Once you have the CSV messages, analyze the log and provide a concise summary (max. 25 words)
         that highlights what is happening and notes any potential errors.
+        
+        Note - Each row represents a request message sent from the diagnostic tool and the ECU's response. The service ID codes (SIDs) and their descriptions are included in the log. Descriptions of the negative response codes (NRCs), if any, are included to the right of the '//'.
 
         CSV Messages:
         {pcap_content}
-        """
+        """        
 
 # -------------------
 # PCAP Analyzer Agent
