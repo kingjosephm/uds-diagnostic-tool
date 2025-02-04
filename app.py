@@ -13,8 +13,9 @@ from utils import instantiate_llm, pcap_transformation_wrapper
 from agents.state import State
 from agents.internet_search import internet_search_node
 from agents.pcap_analyzer import pcap_analyzer_node
+from agents.pcap_renderer import pcap_renderer_node
 
-nest_asyncio.apply()  # Needed for running the async function with Flask
+nest_asyncio.apply()  # Needed for running async functions with Flask
 
 # -------------------
 # Configuration
@@ -43,7 +44,7 @@ chat_histories = {}  # This dictionary will store chat history per session
 
 WELCOME_MESSAGE = {
     "role": "assistant",
-    "content": "Hi! How can I help you? Options include uploading a PCAP file or asking a question about UDS Codes."
+    "content": "Hi! How can I help you? Options include uploading a PCAP file, asking a question about UDS Codes, or requesting to view a file."
 }
 
 # -------------------
@@ -53,19 +54,20 @@ WELCOME_MESSAGE = {
 # Initialize the LLM model
 llm = instantiate_llm()  # No streaming for single query functionality
 
-nodes = ["internet_search", "pcap_analyzer"]
+# Update the list of nodes to include the new "df_renderer" agent.
+nodes = ["internet_search", "pcap_analyzer", "pcap_renderer"]
 options = nodes + ["FINISH"]
 
 class Router(TypedDict):
-    """Worker to route to next. If no workers are needed, route to FINISH."""
+    """Worker to route to next. If no worker is needed, route to FINISH."""
     next: Literal[*options]
 
 def supervisor_node(state: MessagesState) -> Command[Literal[*nodes, "__end__"]]:
     system_prompt = (
         "You are a supervisor tasked with managing a conversation between the following workers: "
-        f"{nodes}. The conversation context may include an active PCAP file. "
-        "If a user asks about the active PCAP file, please respond with its filename as stored in the conversation context. "
-        "If you are uncertain about a user's request or if the query is ambiguous, ask a clarifying question rather than echoing the user's input. "
+        f"{nodes}. The conversation context may include an active PCAP file or a request to view  PCAP file. "
+        "If a user asks about the active PCAP file, respond with its filename as stored in the conversation context. "
+        "If the user's request is ambiguous, ask clarifying questions instead of echoing the query. "
         "Based on the conversation below, determine the next worker to act and respond with that worker's name. "
         "When finished, respond with FINISH."
     )
@@ -85,6 +87,7 @@ builder.add_edge(START, "supervisor")
 builder.add_node("supervisor", supervisor_node)
 builder.add_node("internet_search", internet_search_node)
 builder.add_node("pcap_analyzer", pcap_analyzer_node)
+builder.add_node("pcap_renderer", pcap_renderer_node)
 graph = builder.compile(checkpointer=memory, debug=True)
 
 # -------------------
@@ -136,6 +139,14 @@ def chat():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route("/reset", methods=["GET"])
+def reset_chat():
+    """Clears chat history for the current session and re-adds the welcome message."""
+    session_id = session.get("session_id")
+    chat_histories[session_id] = [WELCOME_MESSAGE]
+    session.pop("uploaded_file_info", None)
+    return jsonify({"message": "Chat history cleared."})
+
 def allowed_file(filename):
     """Check if the uploaded file has a .pcap extension."""
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -172,18 +183,11 @@ def upload_file():
         session["uploaded_file_info"] = filename
 
         # Reset the conversation context so that the new file is clearly active.
-        # We add only a message indicating the active file.
         chat_histories[session_id] = [
             {"role": "assistant", "content": f"Active PCAP file is now '{filename}'."}
         ]
-        
-        # Automatically trigger analysis for the new file.
-        # Use a temporary conversation that includes the analysis request,
-        # but do NOT store the "Please analyze..." message in chat history.
-        temp_conversation = chat_histories[session_id] + [
-            {"role": "user", "content": "Please analyze the uploaded PCAP file."}
-        ]
-        inputs = {"messages": temp_conversation}
+        # Automatically trigger analysis for the new file using the pcap_analyzer.
+        inputs = {"messages": chat_histories[session_id] + [{"role": "user", "content": "Please analyze the uploaded PCAP file."}]}
         result = graph.invoke(inputs, config={"configurable": {"thread_id": 42}})
         analysis_response = result["messages"][-1].content
         chat_histories[session_id].append({"role": "assistant", "content": analysis_response})
@@ -191,7 +195,6 @@ def upload_file():
         return jsonify({"message": f"File {filename} uploaded successfully", "filepath": filepath})
 
     return jsonify({"error": "Invalid file type. Only .pcap files are allowed."}), 400
-
 
 # -------------------
 # Main Entry Point
