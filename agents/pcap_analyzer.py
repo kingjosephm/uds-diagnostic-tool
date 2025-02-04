@@ -56,36 +56,37 @@ def select_and_read_csv(state: State) -> str:
 # -------------------
 # Prompt Template for Analysis
 # -------------------
-def analysis_prompt(pcap_content: str = "<CSV content not loaded>") -> str:
+def analysis_prompt() -> str:
     """
-    Returns the analysis prompt. If the CSV content is missing,
-    the prompt instructs the agent to call the 'select_and_read_csv' tool.
-    Once CSV content is provided, the agent should produce a concise (max. 25-word)
-    summary diagnosis of the UDS protocol messages.
+    Returns the analysis prompt.
+    
+    IMPORTANT:
+    - No CSV content is provided by default.
+    - You must call the tool `select_and_read_csv` to load the CSV content.
+    
+    Once the CSV content is loaded, analyze the UDS protocol log and produce a concise summary (max. 25 words)
+    that highlights key events and potential errors.
+    
+    If you are uncertain about the user's request, ask a clarifying question instead of echoing the user's input.
     """
-    return f"""You are a diagnostic analyst specializing in Unified Diagnostic Services (UDS) logs.
-        If the CSV content is not already provided, call the tool `select_and_read_csv` to load a CSV file.
-        
-        Once you have the CSV messages, analyze the log and provide a concise summary (max. 25 words)
-        that highlights what is happening and notes any potential errors.
-        
-        Note - Each row represents a request message sent from the diagnostic tool and the ECU's response. The service ID codes (SIDs) and their descriptions are included in the log. Descriptions of the negative response codes (NRCs), if any, are included to the right of the '//'.
+    
+    return """You are a diagnostic analyst specializing in Unified Diagnostic Services (UDS) logs. Before performing any analysis, you must call the tool `select_and_read_csv` to load the CSV data.
 
-        CSV Messages:
-        {pcap_content}
-        """        
+    Do not assume any CSV content is present in the conversation history.
+    Once you have loaded the CSV content, analyze the log and provide a concise summary (max. 25 words) that highlights what is happening and notes any potential errors.
+    
+    If you are uncertain about the user's request or if the query is ambiguous, ask a clarifying question instead of echoing the input."""
 
 # -------------------
 # PCAP Analyzer Agent
 # -------------------
 # Create the React agent. Note that initially no CSV content is provided,
-# so the prompt instructs the agent to use the select_and_read_csv tool.
+# so the prompt instructs the agent to call the select_and_read_csv tool.
 pcap_analyzer_agent = create_react_agent(
     llm,
     tools=[select_and_read_csv],
     prompt=analysis_prompt()
 )
-
 
 # -------------------
 # PCAP Analyzer Node
@@ -93,9 +94,8 @@ pcap_analyzer_agent = create_react_agent(
 def pcap_analyzer_node(state: State) -> Command[Literal["supervisor"]]:
     """
     This node invokes the PCAP analyzer agent, which will:
-      1. Use the `select_and_read_csv` tool to obtain the CSV PCAP content.
-      2. Combine that CSV content with a diagnostic prompt.
-      3. Return a concise analysis of the UDS log.
+      1. Call the `select_and_read_csv` tool to load the CSV PCAP content.
+      2. Use that CSV content together with the analysis prompt to produce a concise diagnosis of the UDS log.
     
     The final message is then sent to the supervisor.
     """

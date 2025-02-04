@@ -19,7 +19,6 @@ nest_asyncio.apply()  # Needed for running the async function with Flask
 # -------------------
 # Configuration
 # -------------------
-
 UPLOAD_FOLDER = "uploads"  # Folder to store PCAP files
 ALLOWED_EXTENSIONS = {"pcap"}
 
@@ -31,10 +30,10 @@ app.secret_key = "some-secure-and-random-secret-key"  # Required for session sto
 # Ensure the upload folder exists
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# Delete existing PCAP files on startup
+# Delete existing PCAP and CSV files on startup
 for file in os.listdir(UPLOAD_FOLDER):
     file_path = os.path.join(UPLOAD_FOLDER, file)
-    if os.path.isfile(file_path) and file.endswith((".pcap", ".csv")):
+    if os.path.isfile(file_path) and file.lower().endswith((".pcap", ".csv")):
         os.remove(file_path)
 
 # -------------------
@@ -42,7 +41,10 @@ for file in os.listdir(UPLOAD_FOLDER):
 # -------------------
 chat_histories = {}  # This dictionary will store chat history per session
 
-WELCOME_MESSAGE = {"role": "assistant", "content": "Hi! How can I help you? Options include uploading a PCAP file, or asking a question about e.g. UDS Codes."}
+WELCOME_MESSAGE = {
+    "role": "assistant",
+    "content": "Hi! How can I help you? Options include uploading a PCAP file or asking a question about UDS Codes."
+}
 
 # -------------------
 # LangGraph Supervisor Agent Setup
@@ -55,16 +57,17 @@ nodes = ["internet_search", "pcap_analyzer"]
 options = nodes + ["FINISH"]
 
 class Router(TypedDict):
-    """Worker to route to next. If no workers needed, route to FINISH."""
+    """Worker to route to next. If no workers are needed, route to FINISH."""
     next: Literal[*options]
 
 def supervisor_node(state: MessagesState) -> Command[Literal[*nodes, "__end__"]]:
     system_prompt = (
-        "You are a supervisor tasked with managing a conversation between the"
-        f" following workers: {nodes}. Given the following user request,"
-        " respond with the worker to act next. Each worker will perform a"
-        " task and respond with their results and status. When finished,"
-        " respond with FINISH."
+        "You are a supervisor tasked with managing a conversation between the following workers: "
+        f"{nodes}. The conversation context may include an active PCAP file. "
+        "If a user asks about the active PCAP file, please respond with its filename as stored in the conversation context. "
+        "If you are uncertain about a user's request or if the query is ambiguous, ask a clarifying question rather than echoing the user's input. "
+        "Based on the conversation below, determine the next worker to act and respond with that worker's name. "
+        "When finished, respond with FINISH."
     )
     messages = [{"role": "system", "content": system_prompt}] + state["messages"]
     response = llm.with_structured_output(Router).invoke(messages)
@@ -84,7 +87,6 @@ builder.add_node("internet_search", internet_search_node)
 builder.add_node("pcap_analyzer", pcap_analyzer_node)
 graph = builder.compile(checkpointer=memory, debug=True)
 
-
 # -------------------
 # Flask Routes
 # -------------------
@@ -98,8 +100,8 @@ def initialize_chat():
         session["session_id"] = session_id
     
     if session_id not in chat_histories:
-        chat_histories[session_id] = [WELCOME_MESSAGE]  # Start session with welcome message
-        session.pop("uploaded_file_info", None)  # Clear uploaded file context for a new session
+        chat_histories[session_id] = [WELCOME_MESSAGE]
+        session.pop("uploaded_file_info", None)
 
 @app.route("/", methods=["GET"])
 def index():
@@ -120,18 +122,12 @@ def chat():
     user_message = data.get("message", "").strip()
 
     try:
-        # Use uploaded file context if applicable
-        uploaded_file_context = ""
-        if "uploaded_file_info" in session:
-            uploaded_file_context = f"Analyzing the file {session['uploaded_file_info']}. "
-        
-        full_message = uploaded_file_context + user_message
-        
-        inputs = {"messages": [{"role": "user", "content": full_message}]}
+        # Include the full conversation history to provide context.
+        conversation = chat_histories[session_id] + [{"role": "user", "content": user_message}]
+        inputs = {"messages": conversation}
         result = graph.invoke(inputs, config={"configurable": {"thread_id": 42}})
         assistant_response = result["messages"][-1].content
 
-        # Store messages in memory for the session
         chat_histories[session_id].append({"role": "user", "content": user_message})
         chat_histories[session_id].append({"role": "assistant", "content": assistant_response})
 
@@ -145,7 +141,7 @@ def reset_chat():
     """Clears chat history for the current session and re-adds the welcome message."""
     session_id = session.get("session_id")
     chat_histories[session_id] = [WELCOME_MESSAGE]
-    session.pop("uploaded_file_info", None)  # Clear uploaded file context
+    session.pop("uploaded_file_info", None)
     return jsonify({"message": "Chat history cleared."})
 
 def allowed_file(filename):
@@ -165,25 +161,34 @@ def upload_file():
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
+        
+        # Delete any existing PCAP or CSV files in the UPLOAD_FOLDER.
+        for f in os.listdir(app.config["UPLOAD_FOLDER"]):
+            file_path = os.path.join(app.config["UPLOAD_FOLDER"], f)
+            if os.path.isfile(file_path) and f.lower().endswith((".pcap", ".csv")):
+                os.remove(file_path)
+        
         filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
         file.save(filepath)
         
-        df  = pcap_transformation_wrapper(filepath)
-        df_html = df.head().to_html(classes="dataframe", index=False)
-
-        chat_histories[session_id].append({
-            "role": "assistant",
-            "content": f"Here's a preview of the uploaded PCAP file:<br>{df_html}"
-        })
-        chat_histories[session_id].append({
-            "role": "assistant",
-            "content": "Let me know if you'd like to proceed with further analysis."
-        })
-        
+        # Process the PCAP file and write out its CSV version.
+        df = pcap_transformation_wrapper(filepath)
         csv_path = os.path.join(app.config["UPLOAD_FOLDER"], f"{filename.split('.')[0]}.csv")
         df.to_csv(csv_path, index=False)
 
+        # Update the session with the new file's name.
         session["uploaded_file_info"] = filename
+
+        # Reset the conversation context so that the new file is clearly active.
+        chat_histories[session_id] = [
+            {"role": "assistant", "content": f"Active PCAP file is now '{filename}'."},
+            {"role": "assistant", "content": "Please analyze the uploaded PCAP file."}
+        ]
+        # Automatically trigger analysis for the new file.
+        inputs = {"messages": chat_histories[session_id]}
+        result = graph.invoke(inputs, config={"configurable": {"thread_id": 42}})
+        analysis_response = result["messages"][-1].content
+        chat_histories[session_id].append({"role": "assistant", "content": analysis_response})
 
         return jsonify({"message": f"File {filename} uploaded successfully", "filepath": filepath})
 
