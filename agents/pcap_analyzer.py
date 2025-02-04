@@ -59,29 +59,31 @@ def select_and_read_csv(state: State) -> str:
 def analysis_prompt() -> str:
     """
     Returns the analysis prompt.
-    
+
     IMPORTANT:
     - No CSV content is provided by default.
-    - You must call the tool `select_and_read_csv` to load the CSV content.
+    - Your FIRST ACTION MUST be to call the tool `select_and_read_csv` to load the CSV data.
+    - Do not assume any CSV content is present in the conversation history.
     
-    Once the CSV content is loaded, analyze the UDS protocol log and produce a concise summary (max. 25 words)
-    that highlights key events and potential errors.
+    Once the CSV content is loaded, analyze the UDS log and produce a concise summary (max. 25 words)
+    that highlights key events and any potential errors.
     
-    If you are uncertain about the user's request, ask a clarifying question instead of echoing the user's input.
+    If you are uncertain about the user's request or if the query is ambiguous, ask a clarifying question instead of echoing the input.
     """
-    
-    return """You are a diagnostic analyst specializing in Unified Diagnostic Services (UDS) logs. Before performing any analysis, you must call the tool `select_and_read_csv` to load the CSV data.
-
-    Do not assume any CSV content is present in the conversation history.
-    Once you have loaded the CSV content, analyze the log and provide a concise summary (max. 25 words) that highlights what is happening and notes any potential errors.
-    
-    If you are uncertain about the user's request or if the query is ambiguous, ask a clarifying question instead of echoing the input."""
+    return (
+        "You are a diagnostic analyst specializing in Unified Diagnostic Services (UDS) logs. "
+        "Your task is to analyze a PCAP file that has been converted into CSV format. However, no CSV data is provided by default. "
+        "Your very first action MUST be to call the tool `select_and_read_csv` to load the CSV data from the uploads directory. "
+        "Do not assume that any CSV content is present in the conversation history. "
+        "Once you have loaded the CSV data, analyze the UDS log and produce a concise summary (max. 25 words) "
+        "that highlights key events and notes any potential errors. "
+        "If you are uncertain about the user's request or if the query is ambiguous, ask a clarifying question rather than simply echoing the input."
+    )
 
 # -------------------
 # PCAP Analyzer Agent
 # -------------------
-# Create the React agent. Note that initially no CSV content is provided,
-# so the prompt instructs the agent to call the select_and_read_csv tool.
+# Create the React agent. Initially no CSV content is provided, so the prompt forces the agent to call the select_and_read_csv tool.
 pcap_analyzer_agent = create_react_agent(
     llm,
     tools=[select_and_read_csv],
@@ -100,8 +102,7 @@ def pcap_analyzer_node(state: State) -> Command[Literal["supervisor"]]:
     The final message is then sent to the supervisor.
     """
     result = pcap_analyzer_agent.invoke(state)
-    # Assume the agent’s result is a dict with a "messages" list;
-    # the last message is the final answer.
+    # We assume the agent’s result is a dict with a "messages" list; the last message is the final answer.
     final_message = result["messages"][-1]
     
     return Command(

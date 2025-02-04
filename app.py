@@ -136,14 +136,6 @@ def chat():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route("/reset", methods=["GET"])
-def reset_chat():
-    """Clears chat history for the current session and re-adds the welcome message."""
-    session_id = session.get("session_id")
-    chat_histories[session_id] = [WELCOME_MESSAGE]
-    session.pop("uploaded_file_info", None)
-    return jsonify({"message": "Chat history cleared."})
-
 def allowed_file(filename):
     """Check if the uploaded file has a .pcap extension."""
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -180,12 +172,18 @@ def upload_file():
         session["uploaded_file_info"] = filename
 
         # Reset the conversation context so that the new file is clearly active.
+        # We add only a message indicating the active file.
         chat_histories[session_id] = [
-            {"role": "assistant", "content": f"Active PCAP file is now '{filename}'."},
-            {"role": "assistant", "content": "Please analyze the uploaded PCAP file."}
+            {"role": "assistant", "content": f"Active PCAP file is now '{filename}'."}
         ]
+        
         # Automatically trigger analysis for the new file.
-        inputs = {"messages": chat_histories[session_id]}
+        # Use a temporary conversation that includes the analysis request,
+        # but do NOT store the "Please analyze..." message in chat history.
+        temp_conversation = chat_histories[session_id] + [
+            {"role": "user", "content": "Please analyze the uploaded PCAP file."}
+        ]
+        inputs = {"messages": temp_conversation}
         result = graph.invoke(inputs, config={"configurable": {"thread_id": 42}})
         analysis_response = result["messages"][-1].content
         chat_histories[session_id].append({"role": "assistant", "content": analysis_response})
@@ -193,6 +191,7 @@ def upload_file():
         return jsonify({"message": f"File {filename} uploaded successfully", "filepath": filepath})
 
     return jsonify({"error": "Invalid file type. Only .pcap files are allowed."}), 400
+
 
 # -------------------
 # Main Entry Point
