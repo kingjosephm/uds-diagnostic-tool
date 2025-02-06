@@ -21,11 +21,9 @@ UPLOAD_FOLDER = "uploads"
 # Tool for the PCAP Renderer Agent
 # -------------------
 @tool
-def render_dataframe(state: State) -> str:
+def render_dataframe_head(state: State) -> str:
     """
-    Searches for a (PCAP) CSV file in the UPLOAD_FOLDER and renders it as HTML.
-    - If the user's latest message contains "whole" or "all", render the entire dataframe.
-    - Otherwise, render only the first 5 rows.
+    Loads the PCAP CSV file and renders ONLY the first 5 rows as HTML.
     """
     csv_files = [f for f in os.listdir(UPLOAD_FOLDER) if f.lower().endswith('.csv')]
     if not csv_files:
@@ -43,16 +41,36 @@ def render_dataframe(state: State) -> str:
     
     return html
 
+@tool
+def render_dataframe_full(state: State) -> str:
+    """
+    Loads the PCAP CSV file and renders the FULL DATAFRAME as HTML.
+    """
+    csv_files = [f for f in os.listdir(UPLOAD_FOLDER) if f.lower().endswith('.csv')]
+    if not csv_files:
+        return "Error: No CSV file found in the uploads directory."
+    
+    # For simplicity, if there is more than one CSV, choose the first.
+    selected_file = csv_files[0]
+    csv_path = os.path.join(UPLOAD_FOLDER, selected_file)
+    try:
+        df = pd.read_csv(csv_path)
+    except Exception as e:
+        return f"Error reading CSV file: {e}"
+    
+    html = df.to_html(classes="dataframe", index=False)
+    
+    return html
+
 def renderer_prompt() -> str:
     """
     Returns the prompt for the PCAP Renderer Agent.
     """
     return (
-        "You are a file viewer agent whose sole responsibility is to render a PCAP file (as a CSV) as HTML. "
-        "Your output must contain ONLY the HTML representation of the CSV file and nothing else. "
-        "When a user requests to view the file, check if the user's query contains the words 'whole' or 'all'. "
-        "If it does, display the entire CSV file; otherwise, display only the first 5 rows. "
-        "Do not include any extra commentary, apologies, or additional text."
+        "You are a file viewer agent whose sole responsibility is to render a PCAP file (as a CSV) as HTML. Your output must contain ONLY the HTML representation of the CSV file and nothing else."
+        "\n"
+        "You have two tools at your disposal: `render_dataframe_head` and `render_dataframe_full`. The former renders only the first 5 rows of the CSV file, while the latter renders the entire CSV file."
+        "Use `render_dataframe_head` by default, otherwise `render_dataframe_full` if the user requests to view the full PCAP file using words like 'full', 'all', or 'complete'."
     )
 
 # -------------------
@@ -62,30 +80,21 @@ llm = instantiate_llm()
 
 pcap_renderer_agent = create_react_agent(
     llm,
-    tools=[render_dataframe],
+    tools=[render_dataframe_head, render_dataframe_full],
     prompt=renderer_prompt()
 )
 
 def pcap_renderer_node(state: State) -> Command[Literal["supervisor"]]:
     """
     This node invokes the PCAP renderer agent.
-    It calls the `render_dataframe` tool to render the PCAP CSV file as HTML,
-    then sends that HTML rendering to the supervisor.
-    
-    Note: The HTML rendering is NOT stored in the conversation history.
+    It calls either the `render_dataframe_head` tool by default, or if the user asks to view the full PCAP file using words like 'full', 'all', or 'complete' the `render_dataframe_full` tool. If you are confused, ask the user to clarify.
     """
-    try:
-        result = pcap_renderer_agent.invoke(state, {"recursion_limit": 5})
-    except Exception as e:
-        # If an error occurs, raise a recursion error (or any appropriate error)
-        raise GraphRecursionError("Error in PCAP renderer: " + str(e))
-    
-    final_message = result["messages"][-1]
+    result = pcap_renderer_agent.invoke(state)
     
     return Command(
         update={
             "messages": [
-                HumanMessage(content=final_message.content, name="pcap_renderer")
+                HumanMessage(content=result["messages"][-1].content, name="pcap_renderer")
             ]
         },
         goto="supervisor",

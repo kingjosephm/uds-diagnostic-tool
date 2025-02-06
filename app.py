@@ -128,7 +128,7 @@ def chat():
         # Include the full conversation history to provide context.
         conversation = chat_histories[session_id] + [{"role": "user", "content": user_message}]
         inputs = {"messages": conversation}
-        result = graph.invoke(inputs, config={"configurable": {"thread_id": 42}})
+        result = graph.invoke(inputs, config={"configurable": {"thread_id": 42}, "recursion_limit": 5})
         assistant_response = result["messages"][-1].content
 
         chat_histories[session_id].append({"role": "user", "content": user_message})
