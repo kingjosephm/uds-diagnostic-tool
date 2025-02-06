@@ -89,6 +89,7 @@ builder.add_node("internet_search", internet_search_node)
 builder.add_node("pcap_analyzer", pcap_analyzer_node)
 builder.add_node("pcap_renderer", pcap_renderer_node)
 graph = builder.compile(checkpointer=memory, debug=True)
+graph.get_graph().draw_mermaid_png(output_file_path='./graph.png')  # generates plot of the graph, saving to root directory
 
 # -------------------
 # Flask Routes
