@@ -88,6 +88,11 @@ if __name__ == '__main__':
     # Combine 
     comb = pd.concat([sid_long, nrc_long], axis=0).reset_index(drop=True)
     
+    # Delete vector store, if exists
+    if os.path.exists('./uds/vector_store'):
+        os.system('rm -rf ./uds/vector_store')
+        os.mkdir('./uds/vector_store')
+    
     documents = [
         Document(
             page_content=row.Description,
