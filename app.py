@@ -14,6 +14,7 @@ from agents.state import State
 from agents.internet_search import internet_search_node
 from agents.pcap_analyzer import pcap_analyzer_node
 from agents.pcap_renderer import pcap_renderer_node
+from agents.rag import uds_code_search_node  # Import the UDS code search node
 
 nest_asyncio.apply()  # Needed for running async functions with Flask
 
@@ -54,8 +55,8 @@ WELCOME_MESSAGE = {
 # Initialize the LLM model
 llm = instantiate_llm()  # No streaming for single query functionality
 
-# Update the list of nodes to include the new "df_renderer" agent.
-nodes = ["internet_search", "pcap_analyzer", "pcap_renderer"]
+# Update the list of nodes to include the new "uds_code_search" agent.
+nodes = ["internet_search", "pcap_analyzer", "pcap_renderer", "uds_code_search"]
 options = nodes + ["FINISH"]
 
 class Router(TypedDict):
@@ -65,7 +66,7 @@ class Router(TypedDict):
 def supervisor_node(state: MessagesState) -> Command[Literal[*nodes, "__end__"]]:
     system_prompt = (
         "You are a supervisor tasked with managing a conversation between the following workers: "
-        f"{nodes}. The conversation context may include an active PCAP file or a request to view  PCAP file. "
+        f"{nodes}. The conversation context may include an active PCAP file or a request to view a PCAP file. "
         "If a user asks about the active PCAP file, respond with its filename as stored in the conversation context. "
         "If the user's request is ambiguous, ask clarifying questions instead of echoing the query. "
         "Based on the conversation below, determine the next worker to act and respond with that worker's name. "
@@ -81,15 +82,16 @@ def supervisor_node(state: MessagesState) -> Command[Literal[*nodes, "__end__"]]
 # Initialize memory saver (could be replaced with SQLite)
 memory = MemorySaver()
 
-# Create the state graph
+# Create the state graph and add nodes (including the new UDS code search node)
 builder = StateGraph(State)
 builder.add_edge(START, "supervisor")
 builder.add_node("supervisor", supervisor_node)
 builder.add_node("internet_search", internet_search_node)
 builder.add_node("pcap_analyzer", pcap_analyzer_node)
 builder.add_node("pcap_renderer", pcap_renderer_node)
+builder.add_node("uds_code_search", uds_code_search_node)
 graph = builder.compile(checkpointer=memory, debug=True)
-graph.get_graph().draw_mermaid_png(output_file_path='./graph.png')  # generates plot of the graph, saving to root directory
+graph.get_graph().draw_mermaid_png(output_file_path='./graph.png')  # Generates a visual plot of the graph
 
 # -------------------
 # Flask Routes
@@ -102,7 +104,7 @@ def initialize_chat():
     if session_id is None:
         session_id = os.urandom(16).hex()
         session["session_id"] = session_id
-    
+
     if session_id not in chat_histories:
         chat_histories[session_id] = [WELCOME_MESSAGE]
         session.pop("uploaded_file_info", None)
