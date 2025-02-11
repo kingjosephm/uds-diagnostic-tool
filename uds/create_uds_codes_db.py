@@ -2,10 +2,6 @@ import sqlite3
 import pandas as pd
 import numpy as np
 from dotenv import load_dotenv
-from langchain_openai import OpenAIEmbeddings
-from langchain_chroma import Chroma
-from langchain_core.documents import Document
-import os
 
 # Load environment variables from .env file
 load_dotenv()
@@ -23,7 +19,7 @@ if __name__ == '__main__':
     cursor = conn.cursor()
 
     ###################################################################################
-    ####################    SQLite DB for Tabular Lookup    ###########################
+    ####################        Short UDS Descriptions      ###########################
     ###################################################################################
     
     # NRC Codes
@@ -82,37 +78,13 @@ if __name__ == '__main__':
     pd.read_sql_query("SELECT * FROM sid LIMIT 5;", conn)
 
     ###################################################################################
-    #####################     Vector DB for SID & NRC Codes     #######################
+    ####################      Long UDS Descriptions         ###########################
     ###################################################################################
 
     # Combine 
-    comb = pd.concat([sid_long, nrc_long], axis=0).reset_index(drop=True)
+    long = pd.concat([sid_long, nrc_long], axis=0).reset_index(drop=True)
     
-    # Delete vector store, if exists
-    if os.path.exists('./uds/vector_store'):
-        os.system('rm -rf ./uds/vector_store')
-        os.mkdir('./uds/vector_store')
+    long.to_sql(name='descriptions', con=conn, if_exists='replace', index=False)
     
-    documents = [
-        Document(
-            page_content=row.Description,
-            metadata={
-                'Code': row.Code,
-                'Type': row.Type
-            }
-        )
-        for row in comb.itertuples(index=False)
-    ]
-        
-    # Initialize the embedding model
-    embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
-    
-    # Create Chroma vector store
-    vector_store = Chroma(
-    collection_name="uds_codes",
-    embedding_function=embeddings,
-    persist_directory="./uds/vector_store"  # Directory to save the vector store locally
-    )
-    
-    # Add documents to the vector store
-    vector_store.add_documents(documents=documents)
+    # Query the database for sanity check
+    pd.read_sql_query("SELECT * FROM descriptions LIMIT 5;", conn)
