@@ -14,7 +14,7 @@ from agents.state import State
 from agents.internet_search import internet_search_node
 from agents.pcap_analyzer import pcap_analyzer_node
 from agents.pcap_renderer import pcap_renderer_node
-from agents.rag import uds_code_search_node  # Import the UDS code search node
+from agents.uds_codes import uds_description_search_node
 
 nest_asyncio.apply()  # Needed for running async functions with Flask
 
@@ -27,7 +27,7 @@ ALLOWED_EXTENSIONS = {"pcap"}
 # Initialize Flask app
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-app.secret_key = "some-secure-and-random-secret-key"  # Required for session storage
+app.secret_key = "some-secure-and-random-secret-key"  # TODO
 
 # Ensure the upload folder exists
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -55,8 +55,8 @@ WELCOME_MESSAGE = {
 # Initialize the LLM model
 llm = instantiate_llm()  # No streaming for single query functionality
 
-# Update the list of nodes to include the new "uds_code_search" agent.
-nodes = ["internet_search", "pcap_analyzer", "pcap_renderer", "uds_code_search"]
+# List of workers (nodes) available
+nodes = ["internet_search", "pcap_analyzer", "pcap_renderer", "uds_description_search"]
 options = nodes + ["FINISH"]
 
 class Router(TypedDict):
@@ -66,9 +66,7 @@ class Router(TypedDict):
 def supervisor_node(state: MessagesState) -> Command[Literal[*nodes, "__end__"]]:
     system_prompt = (
         "You are a supervisor tasked with managing a conversation between the following workers: "
-        f"{nodes}. The conversation context may include an active PCAP file or a request to view a PCAP file. "
-        "If a user asks about the active PCAP file, respond with its filename as stored in the conversation context. "
-        "If the user's request is ambiguous, ask clarifying questions instead of echoing the query. "
+        f"{nodes}. The conversation context may include an active PCAP file, a UDS code query, or a request to view a PCAP file. If a user asks about the active PCAP file, respond with its filename as stored in the conversation context. If the user's request is ambiguous, ask clarifying questions instead of echoing the query. If the user asks for information about UDS codes, delegate first to the `uds_description_search` worker. If the answer cannot be found in the database, resort to the `internet_search worker`. "
         "Based on the conversation below, determine the next worker to act and respond with that worker's name. "
         "When finished, respond with FINISH."
     )
@@ -89,7 +87,7 @@ builder.add_node("supervisor", supervisor_node)
 builder.add_node("internet_search", internet_search_node)
 builder.add_node("pcap_analyzer", pcap_analyzer_node)
 builder.add_node("pcap_renderer", pcap_renderer_node)
-builder.add_node("uds_code_search", uds_code_search_node)
+builder.add_node("uds_description_search", uds_description_search_node)
 graph = builder.compile(checkpointer=memory, debug=True)
 graph.get_graph().draw_mermaid_png(output_file_path='./graph.png')  # Generates a visual plot of the graph
 
@@ -131,7 +129,7 @@ def chat():
         # Include the full conversation history to provide context.
         conversation = chat_histories[session_id] + [{"role": "user", "content": user_message}]
         inputs = {"messages": conversation}
-        result = graph.invoke(inputs, config={"configurable": {"thread_id": 42}, "recursion_limit": 5})
+        result = graph.invoke(inputs, config={"configurable": {"thread_id": 42}, "recursion_limit": 15})
         assistant_response = result["messages"][-1].content
 
         chat_histories[session_id].append({"role": "user", "content": user_message})
