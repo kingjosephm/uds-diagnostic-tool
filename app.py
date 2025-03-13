@@ -88,8 +88,8 @@ builder.add_node("internet_search", internet_search_node)
 builder.add_node("pcap_analyzer", pcap_analyzer_node)
 builder.add_node("pcap_renderer", pcap_renderer_node)
 builder.add_node("uds_description_search", uds_description_search_node)
-graph = builder.compile(checkpointer=memory, debug=True)
-graph.get_graph().draw_mermaid_png(output_file_path='./graph.png')  # Generates a visual plot of the graph
+graph = builder.compile(checkpointer=memory, debug=False)
+#graph.get_graph().draw_mermaid_png(output_file_path='./graph.png')  # Generates a visual plot of the graph
 
 # -------------------
 # Flask Routes
@@ -202,4 +202,4 @@ def upload_file():
 # -------------------
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=8000)
+    app.run(debug=False, host='0.0.0.0', port=8000)

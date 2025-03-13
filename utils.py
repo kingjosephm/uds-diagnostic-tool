@@ -1,15 +1,16 @@
+import os
+import asyncio
 import pandas as pd
 import pyshark
 import sqlite3
 import numpy as np
 from dotenv import load_dotenv
-import os
-import asyncio
 from langchain_openai import ChatOpenAI
 
 # pylint: disable=C0303
 # pylint: disable=C0301
 # pylint: disable=e1133
+
 
 async def read_pcap_file(file_path: str) -> pd.DataFrame:
     """Reads a pcap file and returns a Pandas DataFrame with UDS packets.
@@ -38,7 +39,7 @@ async def read_pcap_file(file_path: str) -> pd.DataFrame:
             
             packet_info = {
                 'number': packet.number,  # Packet number
-                'timestamp': packet.sniff_time.strftime("%Y-%m-%d %H:%M:%S"),  # Time of packet capture
+                'timestamp': packet.sniff_time.strftime("%Y-%m-%d %H:%M:%S.%f"),  # timestamp of when packet captured by the network sniffer
                 'source': packet.doip.source_address if hasattr(packet.doip, 'source_address') else None,
                 'target': packet.doip.target_address if hasattr(packet.doip, 'target_address') else None,
                 'request': True if packet.uds.reply == '0x00' else False,  # misnomer, this is request code if '0x00'. Reply codes are '0x01'
@@ -76,28 +77,43 @@ def combine_request_reply(df: pd.DataFrame) -> pd.DataFrame:
 
     Returns:
         pd.DataFrame: DataFrame with combined requests and replies, with columns:
+            - ecu_address: ECU address
             - request_sid: Service ID of the request
             - reply_sid: Service ID of the reply
-            - error: Error code (if present)
+            - error: Description of the error code (if present, else 'No error')
+            - request_description: Description of the request SID
+            - reply_description: Description of the reply SID
+            - error_description: Description of the error code (if present, else None)
     """
-    requests = df[df['request'] == True].copy()
-    replies = df[df['request'] == False].copy()
+    requests = df[df['request'] == True].drop(columns=['source', 'request', 'error'])
+    replies = df[df['request'] == False].drop(columns=['target', 'request'])
 
     combined = []
 
     for _, request in requests.iterrows():
 
+        # Match the request with the corresponding reply
+        request_sid = request['sid']
+        expected_reply_sid = f"0x{(int(request_sid, 16) + 0x40):X}"  # positive reply code
+        expected_error_sid = "0x7F"  # negative reply code
+
         reply = replies[(replies['source'] == request['target']) &
-                        (request['number'] < replies['number'])].head(1)\
-                            [['source', 'sid', 'error']]  # presorted on packet number so the first reply is the one we want
+                        (request['number'] < replies['number']) & 
+                        (replies['sid'].isin([expected_reply_sid, expected_error_sid]))].head(1)\
+                            [['source', 'sid', 'error', 'timestamp']] # presorted on packet number so the first reply is the one we want
         
-        if reply.empty:  # no corresponding reply found
-            continue
+        if reply.empty:  # no corresponding reply found, so engineer a response too long error
+            
+            reply = pd.DataFrame({'source': [request['target']], 
+                                  'sid': None,  # p6 timing response too long
+                                  'error': 'p6 parameter timout',  # p6 timing response too long 
+                                  'timestamp': pd.NaT})
+        
         else:
-            # Drop reply from the replies dataframe
+            # Drop reply from the replies dataframe, if there was a normal match
             replies = replies.drop(reply.index)
             
-            combined.append([reply['source'].values[0], request['sid'], reply['sid'].values[0], reply['error'].values[0]])
+        combined.append([reply['source'].values[0], request['sid'], reply['sid'].values[0], reply['error'].values[0]])
     
     reply_request = pd.DataFrame(combined, columns=['ecu_address', 'request_sid', 'reply_sid', 'error'])
     
@@ -137,6 +153,9 @@ def merge_sid_description(df: pd.DataFrame) -> pd.DataFrame:
     df = df.merge(sid_codes, left_on='reply_sid', right_on='Code', how='left')\
         .rename(columns={'Description': 'reply_description'}).drop(columns='Code')
     df['reply_description'] = df['reply_description'].fillna('Unknown Reply')
+    
+    # If reply_sid is None, this means an ECU timeout, so fill in 'Timeout: No Reply'
+    df['reply_description'] = np.where(df['reply_sid'].isnull(), 'Timeout: No Reply', df['reply_description'])
 
     return df
     
@@ -160,7 +179,7 @@ def merge_nrc_description(df: pd.DataFrame) -> pd.DataFrame:
     
     # Error codes with no match in db, fill with 'unknown error'
     # Also replaces info from 'Description' column in 'error' column
-    df['error'] = np.where((df['reply_sid']=='0x7F') & (df['Description'].isnull()), 'Unknown error', df['Description'])
+    df['error'] = np.where((df['reply_sid']=='0x7F') & (df['Description'].isnull()), 'Unknown error', df['error'])
     
     # Fill in missing error descriptions
     df['error'] = df['error'].fillna('No error')
@@ -206,23 +225,21 @@ def pcap_transformation_wrapper(file_path: str) -> pd.DataFrame:
 
     return df
 
-def instantiate_llm(streaming: bool = False, model: str = "gpt-4o") -> ChatOpenAI:
-    """Instantiates the Langchain OpenAI model.
+def instantiate_llm(model: str = "gpt-4o") -> ChatOpenAI:
+    """Instantiates the Langchain AzureChatOpenAI model.
     
     Args: 
-        streaming (bool): Whether to use streaming or not. Defaults to False.
         model (str): The model to use. Defaults to "gpt-4o".
 
     Returns:
-        ChatOpenAI: Langchain OpenAI model
+        AzureChatOpenAI: Langchain OpenAI model
     """
     # Load environment variables from .env file
     load_dotenv()
-
-    # Get the OPENAI_API_KEY from environment variables
-    openai_api_key = os.getenv('OPENAI_API_KEY')
-
-    return ChatOpenAI(api_key=openai_api_key, 
-                      temperature=0, 
-                      streaming=streaming, 
-                      model=model)
+    
+    return ChatOpenAI(
+        azure_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT"), 
+        openai_api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+        deployment_name=model,
+        api_version="2024-02-01"
+    )
